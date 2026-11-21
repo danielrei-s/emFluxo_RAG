@@ -14,7 +14,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F0-T04 | Makefile com alvos padrão | ✅ | main | `make help` e `make lint test` validados |
 | F0-T05 | Primitivas comuns (ids, relógio, erros) | ✅ | main | |
 | F0-T06 | Configuração tipada (`rag_core.config`) | ✅ | main | |
-| F0-T07 | Logging sem conteúdo (`rag_core.logging`) | ⬜ | | |
+| F0-T07 | Logging sem conteúdo (`rag_core.logging`) | ✅ | main | |
 | F0-T08 | Verificação de licenças por perfil | ⬜ | | |
 | F0-T09 | Pre-commit e deteção de segredos local | ⬜ | | |
 | F0-T10 | CI no GitHub Actions | ⬜ | | |
