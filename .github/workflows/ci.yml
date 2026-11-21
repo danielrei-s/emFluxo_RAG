@@ -1,0 +1,95 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+      - name: Instalar dependências
+        run: uv sync --all-packages --frozen
+      - name: ruff
+        run: uv run ruff check .
+      - name: mypy
+        run: uv run mypy packages/core
+      - name: pytest com cobertura
+        run: uv run pytest --cov=rag_core --cov-report=term-missing
+
+  js:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+      - name: Lint, tipos e testes
+        run: |
+          pnpm -r lint
+          pnpm -r typecheck
+          pnpm -r test
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # o gitleaks analisa todo o histórico
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Instalar dependências
+        run: |
+          uv sync --all-packages --frozen
+          pnpm install --frozen-lockfile
+      - name: gitleaks (histórico git)
+        run: uv run pre-commit run gitleaks-history --all-files --hook-stage manual
+      - name: semgrep
+        run: >
+          uvx semgrep scan --config p/default --config p/python --config p/typescript
+          --error --metrics=off
+      - name: pip-audit
+        run: |
+          uv export --all-packages --no-hashes --no-emit-workspace --frozen > audit-requirements.txt
+          uvx pip-audit -r audit-requirements.txt --no-deps --disable-pip
+      - name: pnpm audit
+        run: pnpm audit --audit-level high
+      - name: Licenças
+        run: make licenses
+      - name: SBOM (syft)
+        uses: anchore/sbom-action@66cbf4bc1f1c0d2edc94016e65bc221b6bb0ad6c # v0.24.3
+        with:
+          path: .
+          format: spdx-json
+          artifact-name: sbom.spdx.json
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+      - name: Instalar dependências
+        run: uv sync --all-packages --frozen
+      - name: Testes de integração (código 5 = nenhum teste, conta como sucesso)
+        run: |
+          code=0
+          uv run pytest -m integration --allow-hosts=127.0.0.1,localhost || code=$?
+          if [ "$code" -eq 5 ]; then code=0; fi
+          exit "$code"

@@ -5,3 +5,8 @@ packages:
   - apps/web
   - apps/backoffice
   - apps/desktop
+
+# Endurecimento da cadeia de fornecimento (semgrep p/default)
+blockExoticSubdeps: true
+minimumReleaseAge: 10080
+trustPolicy: no-downgrade

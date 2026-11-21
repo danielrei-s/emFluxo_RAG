@@ -5,7 +5,12 @@ title = "emFluxo RAG"
 useDefault = true
 
 [allowlist]
-description = "Ficheiros sem segredos reais"
+description = "Ficheiros sem segredos reais e canários de teste (INV-03)"
+regexes = [
+  '''CANARIO-[A-Za-z0-9-]+''',
+  '''HIDDEN-[A-Za-z0-9-]+''',
+  '''PWNED-[A-Za-z0-9-]+''',
+]
 paths = [
   '''uv\.lock$''',
   '''pnpm-lock\.yaml$''',

@@ -18,6 +18,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "jsdom": "^26",
-    "vitest": "^3"
+    "vitest": "^4"
   }
 }

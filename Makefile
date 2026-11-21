@@ -39,8 +39,8 @@ eval: ## Avaliação com fakes
 eval-live: ## Avaliação com modelos reais
 	@echo "ainda não implementado (F5-T05)"
 
-security: ## Deteção de segredos (gitleaks); semgrep e audits entram em F0-T10
-	uv run pre-commit run gitleaks --all-files
+security: ## Segredos no histórico git (gitleaks); semgrep e audits correm no CI
+	uv run pre-commit run gitleaks-history --all-files --hook-stage manual
 
 licenses: ## Verificação de licenças por perfil (server e dev; shipped em F11-T12)
 	uv run python scripts/check_licenses.py --profile server --profile dev
