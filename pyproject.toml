@@ -15,8 +15,9 @@ rag-core = { workspace = true }
 dev = ["rag-core", "pip-licenses", "pyyaml", "pre-commit"]
 
 [tool.pytest.ini_options]
-addopts = "-ra --strict-markers --disable-socket --allow-unix-socket"
-testpaths = ["packages/core/tests", "scripts/tests"]
+# O -m por omissão exclui os níveis pesados (C10); um -m na linha de comandos substitui-o.
+addopts = "-ra --strict-markers --disable-socket --allow-unix-socket -m 'not integration and not docker and not live and not slow and not docling and not ocr and not e2e'"
+testpaths = ["packages/core/tests", "scripts/tests", "infra/tests"]
 markers = [
     "integration: precisa de Postgres (testcontainers, pgvector/pgvector:pg17)",
     "docker: precisa do stack compose (nightly e manual)",

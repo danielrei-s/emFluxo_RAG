@@ -76,7 +76,6 @@ def _scan(binary: str, directory: Path) -> subprocess.CompletedProcess[str]:
     )
 
 
-@pytest.mark.slow
 def test_gitleaks_detects_fake_key(gitleaks: str, tmp_path: Path) -> None:
     # Chave falsa no formato AWS, montada em runtime para não aparecer no código-fonte.
     fake_key = "AKIA" + "QYLPMN5HHHFPZAM2"
@@ -85,7 +84,6 @@ def test_gitleaks_detects_fake_key(gitleaks: str, tmp_path: Path) -> None:
     assert result.returncode == 1, result.stdout + result.stderr
 
 
-@pytest.mark.slow
 def test_gitleaks_passes_clean_file(gitleaks: str, tmp_path: Path) -> None:
     (tmp_path / "ok.py").write_text('GREETING = "olá"\n', encoding="utf-8")
     assert _scan(gitleaks, tmp_path).returncode == 0

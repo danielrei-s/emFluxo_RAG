@@ -1,0 +1,68 @@
+# Serviços locais para desenvolvimento e testes de integração (F0-T11).
+# Todas as portas publicadas ficam em 127.0.0.1 (INV-24): nada é exposto à rede.
+#
+#   make up                          # só o postgres
+#   docker compose -f infra/compose/docker-compose.dev.yml --profile llm up -d
+#
+# Perfis: redis · llm (Ollama, CPU) · llm-gpu (Ollama com GPU NVIDIA) · mail (Mailpit)
+name: rag-dev
+
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.7-pg17
+    environment:
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: rag_dev # só desenvolvimento, só em 127.0.0.1
+      POSTGRES_DB: rag
+    ports:
+      - "127.0.0.1:54329:5432"
+    volumes:
+      - rag-dev-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7.2.17-alpine # 7.2 é a última linha com licença BSD
+    profiles: ["redis"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  ollama:
+    image: ollama/ollama:0.40.17
+    profiles: ["llm"]
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - rag-dev-ollama:/root/.ollama
+
+  ollama-gpu:
+    image: ollama/ollama:0.40.17
+    profiles: ["llm-gpu"]
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - rag-dev-ollama:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  mailpit:
+    image: axllent/mailpit:v1.34.0
+    profiles: ["mail"]
+    ports:
+      - "127.0.0.1:8025:8025"
+      - "127.0.0.1:1025:1025"
+
+volumes:
+  rag-dev-postgres:
+  rag-dev-ollama:

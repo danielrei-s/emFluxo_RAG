@@ -18,7 +18,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F0-T08 | Verificação de licenças por perfil | ✅ | main | Deps novas (dev): pip-licenses (MIT), PyYAML (MIT) |
 | F0-T09 | Pre-commit e deteção de segredos local | ✅ | main | Dep nova (dev): pre-commit (MIT) |
 | F0-T10 | CI no GitHub Actions | ✅ | main | CI verde no GitHub depende de HR-01 (branch protection); vitest 4 e pnpm endurecido por audit/semgrep |
-| F0-T11 | Docker Compose de desenvolvimento | ⬜ | | |
+| F0-T11 | Docker Compose de desenvolvimento | ✅ | main | Smoke com Docker validado (postgres + pgvector); HR-02 não bloqueante |
 | F0-T12 | ADRs iniciais e documentos base | ⬜ | | |
 
 ## F1 — Contratos do core e fakes

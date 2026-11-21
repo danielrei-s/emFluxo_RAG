@@ -2,6 +2,8 @@ SHELL := bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
 
+COMPOSE_DEV := infra/compose/docker-compose.dev.yml
+
 .PHONY: help setup setup-full lint test test-integration test-e2e eval eval-live \
 	security licenses openapi fixtures migrate up down hooks
 
@@ -54,11 +56,11 @@ fixtures: ## Gera o corpus sintético
 migrate: ## Aplica as migrações da BD central
 	@echo "ainda não implementado (F7-T01)"
 
-up: ## Arranca o compose de desenvolvimento
-	@echo "ainda não implementado (F0-T11)"
+up: ## Arranca o compose de desenvolvimento (postgres; perfis com COMPOSE_PROFILES)
+	docker compose -f $(COMPOSE_DEV) up -d --wait
 
 down: ## Pára o compose de desenvolvimento
-	@echo "ainda não implementado (F0-T11)"
+	docker compose -f $(COMPOSE_DEV) down
 
 hooks: ## Instala os hooks de pre-commit
 	uv run pre-commit install
