@@ -1,0 +1,48 @@
+# Pacote original do plano (já copiado para docs/)
+plano-rag-multinegocio-v1/
+plano-rag-multinegocio-v1.zip
+
+# Segredos e ambiente
+.env*
+!.env.example
+
+# Dados locais
+.rag/
+*.db
+*.sqlite
+*.sqlite3
+
+# Caches de modelos
+.cache/
+models/
+*.gguf
+*.onnx
+*.safetensors
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+
+# Node
+node_modules/
+dist/
+.next/
+.turbo/
+coverage/
+
+# Rust / Tauri
+target/
+
+# SO / editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
