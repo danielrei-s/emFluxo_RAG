@@ -1,0 +1,30 @@
+[project]
+name = "emfluxo-rag"
+version = "0.0.0"
+description = "Plataforma RAG Multi-Negócio (raiz do workspace)"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.uv.workspace]
+members = ["packages/core"]
+
+[tool.uv.sources]
+rag-core = { workspace = true }
+
+[dependency-groups]
+dev = ["rag-core"]
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers --disable-socket --allow-unix-socket"
+testpaths = ["packages/core/tests", "scripts/tests"]
+markers = [
+    "integration: precisa de Postgres (testcontainers, pgvector/pgvector:pg17)",
+    "docker: precisa do stack compose (nightly e manual)",
+    "live: modelos ou serviços reais (Ollama, Supabase, HF); manual na Máquina 1",
+    "slow: demora mais de 5 s (nightly)",
+    "docling: perfil pesado Docling",
+    "ocr: perfil pesado OCR",
+    "posix_only: só corre em SO POSIX",
+    "windows_only: só corre em Windows",
+    "e2e: Playwright (nightly e antes de marcos)",
+]

@@ -9,7 +9,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
 | F0-T01 | Criar o monorepo e a estrutura de pastas | ✅ | task/F0-T01-monorepo | HR-01 pendente (titular na LICENSE) |
-| F0-T02 | Ferramentas Python (workspace uv, ruff, mypy, pytest) | ⬜ | | |
+| F0-T02 | Ferramentas Python (workspace uv, ruff, mypy, pytest) | ✅ | main | |
 | F0-T03 | Ferramentas JS/TS (pnpm, TypeScript strict, ESLint, Prettier, Vitest) | ⬜ | | |
 | F0-T04 | Makefile com alvos padrão | ⬜ | | |
 | F0-T05 | Primitivas comuns (ids, relógio, erros) | ⬜ | | |
