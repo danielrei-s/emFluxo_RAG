@@ -17,9 +17,12 @@ As ferramentas são configuradas em F0-T02 a F0-T04; até lá só `python script
 
 ## Comandos
 
+Em Windows, usar o `make` dentro do WSL2.
+
 ```bash
-make setup   # instala dependências (disponível a partir de F0-T04)
-make test    # corre os testes (disponível a partir de F0-T04)
+make setup   # instala dependências
+make help    # lista os alvos
+make lint test
 python scripts/check_structure.py   # verifica a estrutura do repositório
 ```
 
