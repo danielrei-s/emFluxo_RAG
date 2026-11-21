@@ -21,12 +21,37 @@ from structlog.typing import EventDict, Processor, WrappedLogger
 #: Chaves permitidas (C12) mais as que o próprio pipeline acrescenta.
 ALLOWED_KEYS: frozenset[str] = frozenset(
     {
-        "ts", "level", "event", "service", "request_id", "tenant_id", "user_id", "device_id",
-        "doc_id", "chunk_id", "job_id", "conversation_id", "workspace_id", "model", "status",
-        "error_code", "exc_type", "duration_ms", "ttft_ms", "count", "bytes", "tokens_in",
-        "tokens_out", "hash", "stage", "attempt", "http_status", "route",
+        "ts",
+        "level",
+        "event",
+        "service",
+        "request_id",
+        "tenant_id",
+        "user_id",
+        "device_id",
+        "doc_id",
+        "chunk_id",
+        "job_id",
+        "conversation_id",
+        "workspace_id",
+        "model",
+        "status",
+        "error_code",
+        "exc_type",
+        "duration_ms",
+        "ttft_ms",
+        "count",
+        "bytes",
+        "tokens_in",
+        "tokens_out",
+        "hash",
+        "stage",
+        "attempt",
+        "http_status",
+        "route",
         # acrescentadas pelo pipeline
-        "dropped_keys", "exc_frames",
+        "dropped_keys",
+        "exc_frames",
     }
 )
 
@@ -76,9 +101,7 @@ def _basename(path: str) -> str:
 def make_safe_exc_info(tracebacks: bool) -> Processor:
     """Cria o processador que regista ``exc_type`` (e frames), nunca a mensagem."""
 
-    def safe_exc_info(
-        logger: WrappedLogger, method_name: str, event_dict: EventDict
-    ) -> EventDict:
+    def safe_exc_info(logger: WrappedLogger, method_name: str, event_dict: EventDict) -> EventDict:
         info = _resolve_exc_info(event_dict)
         event_dict.pop("exception", None)
         event_dict.pop("stack_info", None)
@@ -86,10 +109,7 @@ def make_safe_exc_info(tracebacks: bool) -> Processor:
             event_dict["exc_type"] = info[0].__name__
             if tracebacks and info[2] is not None:
                 frames = traceback.extract_tb(info[2])
-                event_dict["exc_frames"] = [
-                    f"{_basename(f.filename)}:{f.lineno}"
-                    for f in frames
-                ]
+                event_dict["exc_frames"] = [f"{_basename(f.filename)}:{f.lineno}" for f in frames]
         return event_dict
 
     return safe_exc_info

@@ -1,4 +1,5 @@
 """Testes de fumo de F0-T02: pacote, marcadores e rede desligada."""
+
 from __future__ import annotations
 
 import re
@@ -13,8 +14,15 @@ import rag_core
 ROOT = Path(__file__).resolve().parents[3]
 
 C10_MARKERS = {
-    "integration", "docker", "live", "slow", "docling", "ocr",
-    "posix_only", "windows_only", "e2e",
+    "integration",
+    "docker",
+    "live",
+    "slow",
+    "docling",
+    "ocr",
+    "posix_only",
+    "windows_only",
+    "e2e",
 }
 
 

@@ -68,7 +68,13 @@ def test_env_local_file_is_read(tmp_path: Path) -> None:
 
 @pytest.mark.parametrize(
     "url",
-    ["http://ollama:11434", "https://api.example.com/v1", "http://localhost.evil.com", "nonsense", "http://[::1"],
+    [
+        "http://ollama:11434",
+        "https://api.example.com/v1",
+        "http://localhost.evil.com",
+        "nonsense",
+        "http://[::1",
+    ],
 )
 def test_inv05_offline_rejects_remote_llm_url(url: str) -> None:
     with pytest.raises(ValidationError):

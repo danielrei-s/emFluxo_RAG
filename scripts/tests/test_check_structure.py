@@ -1,4 +1,5 @@
 """Testes de F0-T01: estrutura do repositório, .env.example, .gitignore e plano."""
+
 from __future__ import annotations
 
 import re
@@ -37,8 +38,15 @@ def test_env_example_has_no_secret_values() -> None:
 
 def test_env_example_covers_c9_variables() -> None:
     text = (ROOT / ".env.example").read_text(encoding="utf-8")
-    for name in ("RAG_ENV", "RAG_DEPLOYMENT_MODE", "RAG_DATABASE_URL", "RAG_KEK_BASE64",
-                 "RAG_OLLAMA_URL", "RAG_PROMPT_SENTINEL", "RAG_ALLOWED_LINK_DOMAINS"):
+    for name in (
+        "RAG_ENV",
+        "RAG_DEPLOYMENT_MODE",
+        "RAG_DATABASE_URL",
+        "RAG_KEK_BASE64",
+        "RAG_OLLAMA_URL",
+        "RAG_PROMPT_SENTINEL",
+        "RAG_ALLOWED_LINK_DOMAINS",
+    ):
         assert re.search(rf"^{name}=", text, re.M), name
 
 
@@ -50,13 +58,20 @@ def test_gitignore_blocks_env_files() -> None:
 
 
 def test_plan_and_spec_present() -> None:
-    for rel in ("docs/plan/01-protocolo.md", "docs/plan/tarefas/F0-T01.md",
-                "docs/spec/especificacao-v0.1.md", "docs/plan/STATUS.md",
-                "docs/HUMAN_REQUESTS.md"):
+    for rel in (
+        "docs/plan/01-protocolo.md",
+        "docs/plan/tarefas/F0-T01.md",
+        "docs/spec/especificacao-v0.1.md",
+        "docs/plan/STATUS.md",
+        "docs/HUMAN_REQUESTS.md",
+    ):
         assert (ROOT / rel).is_file(), rel
 
 
 def test_check_structure_script_exits_zero() -> None:
-    result = subprocess.run([sys.executable, str(ROOT / "scripts" / "check_structure.py")],
-                            cwd=ROOT, capture_output=True)
+    result = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "check_structure.py")],
+        cwd=ROOT,
+        capture_output=True,
+    )
     assert result.returncode == 0

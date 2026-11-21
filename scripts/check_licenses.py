@@ -171,13 +171,15 @@ def _canonical(name: str) -> str:
 
 def collect_python(profile: str) -> list[Entry]:
     """Corre ``pip-licenses`` no ambiente atual; em perfis de produção filtra por ``uv export``."""
-    entries = parse_python_json(json.loads(_run([sys.executable, "-m", "piplicenses",
-                                                 "--format=json"])))
+    entries = parse_python_json(
+        json.loads(_run([sys.executable, "-m", "piplicenses", "--format=json"]))
+    )
     if profile not in PROD_PROFILES:
         return entries
     uv = shutil.which("uv") or "uv"
-    exported = _run([uv, "export", "--no-dev", "--all-packages", "--no-hashes",
-                     "--no-emit-workspace"])
+    exported = _run(
+        [uv, "export", "--no-dev", "--all-packages", "--no-hashes", "--no-emit-workspace"]
+    )
     prod = {_canonical(m.group(1)) for m in re.finditer(r"^([A-Za-z0-9_.-]+)==", exported, re.M)}
     return [e for e in entries if _canonical(e.name) in prod]
 

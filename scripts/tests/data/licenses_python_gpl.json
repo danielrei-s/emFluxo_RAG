@@ -1,4 +1,4 @@
 [
-  {"License": "MIT License", "Name": "ok-lib", "Version": "1.0.0"},
-  {"License": "GNU General Public License v3 (GPLv3)", "Name": "extract-msg", "Version": "0.50.0"}
+  { "License": "MIT License", "Name": "ok-lib", "Version": "1.0.0" },
+  { "License": "GNU General Public License v3 (GPLv3)", "Name": "extract-msg", "Version": "0.50.0" }
 ]

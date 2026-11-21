@@ -1,4 +1,8 @@
 [
-  {"License": "MIT License", "Name": "ok-lib", "Version": "1.0.0"},
-  {"License": "GNU Lesser General Public License v3 (LGPLv3)", "Name": "psycopg", "Version": "3.2.0"}
+  { "License": "MIT License", "Name": "ok-lib", "Version": "1.0.0" },
+  {
+    "License": "GNU Lesser General Public License v3 (LGPLv3)",
+    "Name": "psycopg",
+    "Version": "3.2.0"
+  }
 ]

@@ -81,15 +81,19 @@ def test_spdx_expressions(policy: dict[str, Any]) -> None:
 
 
 def test_own_workspace_packages_are_ignored(policy: dict[str, Any]) -> None:
-    entries = [cl.Entry("python", "rag-core", "0.0.0", "UNKNOWN"),
-               cl.Entry("js", "@rag/ui", "0.0.0", "UNLICENSED")]
+    entries = [
+        cl.Entry("python", "rag-core", "0.0.0", "UNKNOWN"),
+        cl.Entry("js", "@rag/ui", "0.0.0", "UNLICENSED"),
+    ]
     assert cl.evaluate(entries, "shipped", policy) == []
 
 
 def test_js_entries_one_per_version(policy: dict[str, Any]) -> None:
     entries = _js("licenses_js_ok.json")
     assert [(e.name, e.version) for e in entries] == [
-        ("react", "19.3.1"), ("lib-a", "1.0.0"), ("lib-a", "2.0.0")
+        ("react", "19.3.1"),
+        ("lib-a", "1.0.0"),
+        ("lib-a", "2.0.0"),
     ]
     assert cl.evaluate(entries, "shipped", policy) == []
     assert [v.entry.name for v in cl.evaluate(_js("licenses_js_gpl.json"), "server", policy)] == [
@@ -108,9 +112,9 @@ def test_policy_file_is_well_formed(policy: dict[str, Any]) -> None:
 def test_exceptions_require_reason_and_adr(tmp_path: Path) -> None:
     bad = tmp_path / "policy.yaml"
     bad.write_text(
-        (ROOT / "scripts" / "license_policy.yaml").read_text(encoding="utf-8").replace(
-            "exceptions: []", "exceptions:\n  - package: foo\n"
-        ),
+        (ROOT / "scripts" / "license_policy.yaml")
+        .read_text(encoding="utf-8")
+        .replace("exceptions: []", "exceptions:\n  - package: foo\n"),
         encoding="utf-8",
     )
     with pytest.raises(ValueError, match="reason"):

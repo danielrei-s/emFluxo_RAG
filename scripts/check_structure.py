@@ -3,6 +3,7 @@
 
 Sai com código 1 se faltar alguma.
 """
+
 from __future__ import annotations
 
 import sys

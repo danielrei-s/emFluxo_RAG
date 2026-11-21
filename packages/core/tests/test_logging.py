@@ -80,7 +80,9 @@ def test_exception_frames_only_when_tracebacks_enabled() -> None:
 
 def test_allowed_keys_kept(captured_logs: Events) -> None:
     fields = {
-        key: "x" for key in ALLOWED_KEYS - {"ts", "level", "event", "service", "dropped_keys"}
+        key: "x"
+        for key in ALLOWED_KEYS
+        - {"ts", "level", "event", "service", "dropped_keys"}
         - {"exc_type", "exc_frames"}
     }
     get_logger("svc").info("all_keys", **fields)

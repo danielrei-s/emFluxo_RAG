@@ -16,7 +16,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F0-T06 | Configuração tipada (`rag_core.config`) | ✅ | main | |
 | F0-T07 | Logging sem conteúdo (`rag_core.logging`) | ✅ | main | |
 | F0-T08 | Verificação de licenças por perfil | ✅ | main | Deps novas (dev): pip-licenses (MIT), PyYAML (MIT) |
-| F0-T09 | Pre-commit e deteção de segredos local | ⬜ | | |
+| F0-T09 | Pre-commit e deteção de segredos local | ✅ | main | Dep nova (dev): pre-commit (MIT) |
 | F0-T10 | CI no GitHub Actions | ⬜ | | |
 | F0-T11 | Docker Compose de desenvolvimento | ⬜ | | |
 | F0-T12 | ADRs iniciais e documentos base | ⬜ | | |

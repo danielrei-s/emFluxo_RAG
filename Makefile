@@ -39,8 +39,8 @@ eval: ## Avaliação com fakes
 eval-live: ## Avaliação com modelos reais
 	@echo "ainda não implementado (F5-T05)"
 
-security: ## Deteção de segredos e análise estática de segurança
-	@echo "ainda não implementado (F0-T09)"
+security: ## Deteção de segredos (gitleaks); semgrep e audits entram em F0-T10
+	uv run pre-commit run gitleaks --all-files
 
 licenses: ## Verificação de licenças por perfil (server e dev; shipped em F11-T12)
 	uv run python scripts/check_licenses.py --profile server --profile dev
@@ -61,4 +61,4 @@ down: ## Pára o compose de desenvolvimento
 	@echo "ainda não implementado (F0-T11)"
 
 hooks: ## Instala os hooks de pre-commit
-	@echo "ainda não implementado (F0-T09)"
+	uv run pre-commit install

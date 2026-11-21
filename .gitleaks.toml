@@ -1,0 +1,12 @@
+# Configuração do gitleaks: regras por omissão + exceções mínimas e documentadas.
+title = "emFluxo RAG"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Ficheiros sem segredos reais"
+paths = [
+  '''uv\.lock$''',
+  '''pnpm-lock\.yaml$''',
+]

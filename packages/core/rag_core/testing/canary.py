@@ -5,9 +5,7 @@ from __future__ import annotations
 DEFAULT_CANARIES: tuple[str, ...] = ("CANARIO-", "HIDDEN-", "PWNED-")
 
 
-def assert_no_canary(
-    *texts: str | bytes, canaries: tuple[str, ...] = DEFAULT_CANARIES
-) -> None:
+def assert_no_canary(*texts: str | bytes, canaries: tuple[str, ...] = DEFAULT_CANARIES) -> None:
     """Falha se algum texto contiver um canário.
 
     A mensagem de erro indica só o índice do texto e o canário, nunca o conteúdo.

@@ -1,4 +1,4 @@
 {
-  "MIT": [{"name": "react", "versions": ["19.3.1"], "license": "MIT"}],
-  "ISC": [{"name": "lib-a", "versions": ["1.0.0", "2.0.0"], "license": "ISC"}]
+  "MIT": [{ "name": "react", "versions": ["19.3.1"], "license": "MIT" }],
+  "ISC": [{ "name": "lib-a", "versions": ["1.0.0", "2.0.0"], "license": "ISC" }]
 }

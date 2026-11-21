@@ -2,7 +2,9 @@
   "name": "emfluxo-rag",
   "private": true,
   "packageManager": "pnpm@10.34.9",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck",
