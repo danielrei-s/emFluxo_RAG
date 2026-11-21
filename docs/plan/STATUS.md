@@ -25,7 +25,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
-| F1-T01 | Modelos de domínio (`rag_core.types`) | ⬜ | | |
+| F1-T01 | Modelos de domínio (`rag_core.types`) | ✅ | main | |
 | F1-T02 | Interfaces (`rag_core.interfaces`) | ⬜ | | |
 | F1-T03 | Política de acesso (`rag_core.policy`) | ⬜ | | |
 | F1-T04 | Fakes determinísticos (`rag_core.fakes`) | ⬜ | | |
