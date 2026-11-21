@@ -42,8 +42,8 @@ eval-live: ## Avaliação com modelos reais
 security: ## Deteção de segredos e análise estática de segurança
 	@echo "ainda não implementado (F0-T09)"
 
-licenses: ## Verificação de licenças por perfil
-	@echo "ainda não implementado (F0-T08)"
+licenses: ## Verificação de licenças por perfil (server e dev; shipped em F11-T12)
+	uv run python scripts/check_licenses.py --profile server --profile dev
 
 openapi: ## Gera o OpenAPI e o cliente TypeScript
 	@echo "ainda não implementado (F8-T01)"

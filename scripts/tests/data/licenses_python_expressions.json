@@ -1,0 +1,7 @@
+[
+  {"License": "Apache-2.0 OR GPL-3.0", "Name": "dual-lib", "Version": "1.0.0"},
+  {"License": "MIT AND GPL-3.0", "Name": "both-lib", "Version": "1.0.0"},
+  {"License": "(MIT OR Apache-2.0) AND BSD-3-Clause", "Name": "complex-lib", "Version": "1.0.0"},
+  {"License": "Apache Software License; MIT License", "Name": "multi-lib", "Version": "1.0.0"},
+  {"License": "UNKNOWN", "Name": "rag-core", "Version": "0.0.0"}
+]

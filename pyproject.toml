@@ -12,7 +12,7 @@ members = ["packages/core"]
 rag-core = { workspace = true }
 
 [dependency-groups]
-dev = ["rag-core"]
+dev = ["rag-core", "pip-licenses", "pyyaml"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers --disable-socket --allow-unix-socket"
