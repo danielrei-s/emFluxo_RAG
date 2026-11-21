@@ -9,6 +9,7 @@ dependencies = [
     "structlog",
     "httpx",
     "numpy",
+    "rank-bm25",
 ]
 
 [project.optional-dependencies]
