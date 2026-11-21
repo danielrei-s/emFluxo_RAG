@@ -7,4 +7,6 @@ extend-exclude = ["docs/plan/_ferramentas"]
 select = ["E", "F", "I", "B", "UP", "S", "N", "SIM", "RUF"]
 
 [lint.per-file-ignores]
+# Nomes de erros fixados pelo contrato C6 (sem sufixo Error).
+"packages/core/rag_core/errors.py" = ["N818"]
 "**/tests/**" = ["S101", "S603", "S607"]
