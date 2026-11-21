@@ -1,0 +1,7 @@
+packages:
+  - packages/ui
+  - packages/web-common
+  - packages/api-client
+  - apps/web
+  - apps/backoffice
+  - apps/desktop
