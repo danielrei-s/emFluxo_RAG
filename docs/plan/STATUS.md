@@ -11,9 +11,9 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F0-T01 | Criar o monorepo e a estrutura de pastas | ✅ | task/F0-T01-monorepo | HR-01 pendente (titular na LICENSE) |
 | F0-T02 | Ferramentas Python (workspace uv, ruff, mypy, pytest) | ✅ | main | |
 | F0-T03 | Ferramentas JS/TS (pnpm, TypeScript strict, ESLint, Prettier, Vitest) | ✅ | main | |
-| F0-T04 | Makefile com alvos padrão | ✅ | main | `make` não instalado nesta máquina; só validado por testes de leitura |
+| F0-T04 | Makefile com alvos padrão | ✅ | main | `make help` e `make lint test` validados |
 | F0-T05 | Primitivas comuns (ids, relógio, erros) | ✅ | main | |
-| F0-T06 | Configuração tipada (`rag_core.config`) | ⬜ | | |
+| F0-T06 | Configuração tipada (`rag_core.config`) | ✅ | main | |
 | F0-T07 | Logging sem conteúdo (`rag_core.logging`) | ⬜ | | |
 | F0-T08 | Verificação de licenças por perfil | ⬜ | | |
 | F0-T09 | Pre-commit e deteção de segredos local | ⬜ | | |
