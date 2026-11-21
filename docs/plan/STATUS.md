@@ -27,7 +27,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 |---|---|---|---|---|
 | F1-T01 | Modelos de domínio (`rag_core.types`) | ✅ | main | |
 | F1-T02 | Interfaces (`rag_core.interfaces`) | ✅ | main | |
-| F1-T03 | Política de acesso (`rag_core.policy`) | ⬜ | | |
+| F1-T03 | Política de acesso (`rag_core.policy`) | ✅ | main | |
 | F1-T04 | Fakes determinísticos (`rag_core.fakes`) | ⬜ | | |
 | F1-T05 | Suite de contrato de `VectorStore` | ⬜ | | |
 
