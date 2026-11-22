@@ -21,7 +21,7 @@ setup-full: ## Instala também todos os extras opcionais do core
 
 lint: ## ruff, mypy e lint JS/TS
 	uv run ruff check .
-	uv run mypy packages/core packages/cli
+	uv run mypy packages/core packages/cli services/gateway
 	pnpm -r lint
 	pnpm -r typecheck
 
@@ -50,8 +50,8 @@ security: ## Segredos no histórico git (gitleaks); semgrep e audits correm no C
 licenses: ## Verificação de licenças por perfil (server e dev; shipped em F11-T12)
 	uv run python scripts/check_licenses.py --profile server --profile dev
 
-openapi: ## Gera o OpenAPI e o cliente TypeScript
-	@echo "ainda não implementado (F8-T01)"
+openapi: ## Gera o OpenAPI (gateway; o cliente TypeScript chega com F8-T01)
+	uv run python services/gateway/rag_gateway/export_openapi.py
 
 fixtures: ## Gera o corpus sintético
 	uv run python scripts/make_fixtures.py

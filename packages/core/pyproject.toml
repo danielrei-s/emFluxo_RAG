@@ -21,6 +21,7 @@ ocr = ["rapidocr-onnxruntime", "pillow"]
 docling = ["docling==2.151.1"]
 onnx = ["fastembed", "tokenizers"]
 st = ["sentence-transformers"]
+web = ["fastapi"]
 
 [dependency-groups]
 dev = [
@@ -33,6 +34,7 @@ dev = [
     "pillow",
     "python-stdnum",
     "tokenizers",
+    "fastapi",
     "beautifulsoup4",
     "python-docx",
     "openpyxl",

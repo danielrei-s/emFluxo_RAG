@@ -83,7 +83,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
-| F6-T01 | Esqueleto do serviço | ⬜ | | |
+| F6-T01 | Esqueleto do serviço | ✅ | 2026-11-22 | rag_core/web (request_id, security_headers, body_limit, problem + install_standard_web); services/gateway (create_app, /healthz, /readyz, openapi.json snapshot, Dockerfile validado: build, uid 10001, read-only); extra web; make openapi gera o do gateway |
 | F6-T02 | Autenticação por JWT (JWKS) | ⬜ | | |
 | F6-T03 | Políticas por tenant, quotas e rate limit | ⬜ | | |
 | F6-T04 | Escolha de modelo, timeouts e fallback | ⬜ | | |

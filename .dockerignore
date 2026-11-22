@@ -1,0 +1,22 @@
+# O contexto de construção só precisa do código dos serviços e do lockfile.
+.git
+.venv
+.rag
+.docling-artifacts
+node_modules
+**/__pycache__
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+out
+apps
+docs
+fixtures
+evals
+infra
+scripts
+packages/ui
+packages/api-client
+packages/web-common
+services/central-api
+services/parser-sandbox
