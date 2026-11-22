@@ -11,6 +11,6 @@ select = ["E", "F", "I", "B", "UP", "S", "N", "SIM", "RUF"]
 "packages/core/rag_core/errors.py" = ["N818"]
 "**/tests/**" = ["S101", "S603", "S607"]
 # Fixtures de BD de teste: credenciais descartáveis do contentor e SQL com nomes controlados.
-"services/central-api/tests/**" = ["S106", "S608"]
+"services/central-api/tests/**" = ["S106", "S608", "E501"]
 # SQL com f-strings só interpola nomes de tabela constantes e marcadores "?" (nunca valores).
 "packages/core/rag_core/stores/*.py" = ["S608"]

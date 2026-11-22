@@ -8,9 +8,10 @@ from pathlib import Path
 import psycopg
 import pytest
 from db_bootstrap_roles import LOGINS, bootstrap
-from db_migrate import MIGRATIONS_DIR, MigrationError, migrate
+from db_migrate import MIGRATIONS_DIR, MigrationError, discover, migrate
 
 pytestmark = [pytest.mark.integration, pytest.mark.enable_socket]
+ALL_FILES = [m.filename for m in discover()]
 PASSWORDS = {login: f"pw-{login}-x9" for login in LOGINS}
 
 
@@ -21,11 +22,11 @@ def _scalar(dsn: str, query: str) -> object:
 
 
 def test_migrate_from_empty_and_idempotent(db: str) -> None:
-    assert migrate(db, dry_run=True) == ["0001_schemas_roles_extensions.sql"]
+    assert migrate(db, dry_run=True) == ALL_FILES
     assert _scalar(db, "select to_regclass('app_meta.schema_migrations')") is None  # dry-run
-    assert migrate(db) == ["0001_schemas_roles_extensions.sql"]
+    assert migrate(db) == ALL_FILES
     assert migrate(db) == []  # idempotente
-    assert _scalar(db, "select count(*) from app_meta.schema_migrations") == 1
+    assert _scalar(db, "select count(*) from app_meta.schema_migrations") == len(ALL_FILES)
     schemas = _scalar(
         db, "select count(*) from pg_namespace where nspname in ('app','app_meta','extensions')"
     )
@@ -49,13 +50,13 @@ def test_checksum_tamper_detected(db: str, tmp_path: Path) -> None:
 def test_failed_migration_rolls_back_and_is_not_recorded(db: str, tmp_path: Path) -> None:
     copy = tmp_path / "migrations"
     shutil.copytree(MIGRATIONS_DIR, copy)
-    (copy / "0002_broken.sql").write_text(
+    (copy / f"{len(ALL_FILES) + 1:04d}_broken.sql").write_text(
         "create table app.t (id int);\nselect 1/0;\n", encoding="utf-8"
     )
     with pytest.raises(psycopg.errors.DivisionByZero):
         migrate(db, copy)
     assert _scalar(db, "select to_regclass('app.t')") is None
-    assert _scalar(db, "select count(*) from app_meta.schema_migrations") == 1  # só a 0001
+    assert _scalar(db, "select count(*) from app_meta.schema_migrations") == len(ALL_FILES)
 
 
 def test_inv01_app_roles_have_no_bypassrls(db: str) -> None:
@@ -81,12 +82,14 @@ def test_inv01_app_roles_have_no_bypassrls(db: str) -> None:
     members = (
         psycopg.connect(db)
         .execute(
-            "select pg_has_role('app_worker', 'app_user_role', 'member'), "
-            "pg_has_role('app_api', 'app_worker_role', 'member')"
+            "select pg_has_role('app_worker', 'app_user_role', 'usage'), "
+            "pg_has_role('app_api', 'app_worker_role', 'member'), "
+            "pg_has_role('app_api', 'app_user_role', 'usage')"
         )
         .fetchone()
     )
-    assert members == (True, False)  # o worker herda do utilizador; a API não herda do worker
+    # os logins herdam os privilégios da sua role de grupo; a API não é membro da do worker
+    assert members == (True, False, True)
 
 
 def test_bootstrap_requires_every_password(db: str) -> None:

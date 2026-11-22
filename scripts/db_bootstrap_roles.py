@@ -40,7 +40,7 @@ def bootstrap(dsn: str, passwords: Mapping[str, str]) -> list[str]:
             conn.execute(
                 sql.SQL(
                     "{} role {} with login nosuperuser nobypassrls nocreatedb nocreaterole "
-                    "noinherit password {}"
+                    "inherit password {}"
                 ).format(verb, name, sql.Literal(passwords[login]))
             )
             # nosemgrep: sqlalchemy-execute-raw-query
