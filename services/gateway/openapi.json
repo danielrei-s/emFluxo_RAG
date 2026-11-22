@@ -25,7 +25,9 @@
           }
         },
         "summary": "Processo vivo",
-        "tags": ["ops"]
+        "tags": [
+          "ops"
+        ]
       }
     },
     "/readyz": {
@@ -42,7 +44,9 @@
           }
         },
         "summary": "Dependências prontas",
-        "tags": ["ops"]
+        "tags": [
+          "ops"
+        ]
       }
     }
   }

@@ -205,10 +205,10 @@ def test_asgi_edge_cases_disconnect_and_error_after_response_started() -> None:
 
     async def run() -> None:
         scope = {"type": "http", "headers": []}
-        await BodyLimitMiddleware(app_reads_body, 10)(scope, disconnected, collect)  # type: ignore[arg-type]
+        await BodyLimitMiddleware(app_reads_body, 10)(scope, disconnected, collect)
         with pytest.raises(RuntimeError):  # a resposta já saiu em parte: não se substitui
-            await UnhandledErrorMiddleware(partial_then_boom)(scope, disconnected, collect)  # type: ignore[arg-type]
-        await UnhandledErrorMiddleware(app_reads_body)({"type": "lifespan"}, disconnected, collect)  # type: ignore[arg-type]
+            await UnhandledErrorMiddleware(partial_then_boom)(scope, disconnected, collect)
+        await UnhandledErrorMiddleware(app_reads_body)({"type": "lifespan"}, disconnected, collect)
 
     asyncio.run(run())
     assert sent == ["http.disconnect", "http.response.start", "http.disconnect"]

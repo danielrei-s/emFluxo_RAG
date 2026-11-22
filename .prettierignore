@@ -8,3 +8,4 @@ docs/plan
 docs/spec
 docs/*.md
 fixtures/corpus/
+services/gateway/openapi.json
