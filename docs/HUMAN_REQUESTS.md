@@ -49,7 +49,7 @@ Registo dos pedidos ao OLEK. Formato: Parte G3 do plano. Segredos nunca no chat.
 ### HR-08 · Hugging Face (opcional): conta, token, endpoint dedicado na UE, custos
 - **Tarefa:** F6-T08 · **Bloqueante:** Não
 - **Preciso de:** Hugging Face (opcional): conta, token, endpoint dedicado na UE, custos
-- **Como entregar:** `RAG_LLM_API_KEY_RAG_FALLBACK_HF` no gestor de segredos
+- **Como entregar:** `RAG_HF_API_KEY` e `RAG_HF_ENDPOINT_URL` no gestor de segredos
 - **Estado:** previsto
 
 ### HR-09 · Supabase: projeto na UE, chaves JWT assimétricas, MFA TOTP, SMTP próprio, redirect URLs; correr o bootstrap de roles

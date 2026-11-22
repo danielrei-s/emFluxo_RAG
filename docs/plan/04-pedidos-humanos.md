@@ -13,7 +13,7 @@ Estes são os momentos em que um agente vai precisar do OLEK. Cada um já tem ID
 | HR-05 | Máquina 1 pronta (Ollama com GPU, modelos descarregados) e execução de benchmarks e testes de carga | F5-T05, F6-T07, F13-T05 | **Sim** (M1 e dimensão do vetor) | Correr `make bench` ou dar acesso SSH; partilhar o relatório |
 | HR-06 | Cloudflare: conta, domínio, tunnel, DNS e rotas | F6-T07, F8-T11, F10-T10 | Sim (deploy) | Token do tunnel em `/etc/rag/cloudflared.env` na Máquina 1 |
 | HR-07 | Máquina 1 como servidor: disco encriptado, firewall fechado, arranque automático | F6-T07 | Sim (deploy) | Confirmar "feito" seguindo `runbooks/machine1-setup.md` |
-| HR-08 | Hugging Face (opcional): conta, token, endpoint dedicado na UE, custos | F6-T08 | Não | `RAG_LLM_API_KEY_RAG_FALLBACK_HF` no gestor de segredos |
+| HR-08 | Hugging Face (opcional): conta, token, endpoint dedicado na UE, custos | F6-T08 | Não | `RAG_HF_API_KEY` e `RAG_HF_ENDPOINT_URL` no gestor de segredos |
 | HR-09 | Supabase: projeto na UE, chaves JWT assimétricas, MFA TOTP, SMTP próprio, redirect URLs; correr o bootstrap de roles | F7-T05, F8-T11 | Sim (staging) | URLs em `.env.local`; service role key e passwords no gestor de segredos |
 | HR-10 | Gestor de segredos (Infisical ou Doppler) e segredos de staging | F8-T11 | Sim (staging) | Convite para o projeto de segredos |
 | HR-11 | Back-office: Cloudflare Access (só o teu email) e utilizador staff | F10-T09 | Sim (back-office em staging) | Confirmar "feito"; email do utilizador staff |

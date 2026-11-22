@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
+from pydantic import SecretStr
+
 from rag_core.config import Settings
 from rag_core.errors import ValidationFailed
 from rag_core.interfaces import Embedder, LLMProvider, Reranker
@@ -35,6 +37,15 @@ def _base_url(spec: ModelSpec, settings: Settings) -> str:
     if not value:
         raise ValidationFailed(subcode="model_base_url_missing")
     return str(value)
+
+
+def _api_key(spec: ModelSpec, settings: Settings) -> SecretStr | None:
+    """A chave vem da definição apontada por ``api_key_env``; nunca é lida do ``models.yaml``."""
+    name = (spec.api_key_env or "").removeprefix("RAG_").lower()
+    value = getattr(settings, name, None) if name else None
+    if spec.api_key_env and value is None:
+        raise ValidationFailed(subcode="model_api_key_missing")
+    return value if isinstance(value, SecretStr) else None
 
 
 def _embedder(alias: str, spec: ModelSpec, settings: Settings) -> Embedder:
@@ -108,6 +119,10 @@ def build_llm_providers(
         if spec.backend != "openai_compat":
             raise ValidationFailed(subcode="unsupported_backend")
         providers[alias] = OpenAICompatibleLLM(
-            alias, _base_url(spec, settings), spec.model, is_remote=spec.external
+            alias,
+            _base_url(spec, settings),
+            spec.model,
+            api_key=_api_key(spec, settings),
+            is_remote=spec.external,
         )
     return providers

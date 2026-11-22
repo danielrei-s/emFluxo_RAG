@@ -90,7 +90,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F6-T05 | Endpoint `/v1/chat/completions` (subconjunto compatível com OpenAI) | ✅ | 2026-11-22 | /v1/chat/completions (JSON e SSE), erros 400/413 novos, UsageEvent sem conteúdo, OpenAPI atualizado |
 | F6-T06 | Redação no gateway para fornecedores externos | ✅ | 2026-11-22 | RedactingProvider no ModelRouter (só is_remote + política), reidratação em streaming |
 | F6-T07 | Deploy do gateway na Máquina 1 (staging) | ⛔ | HR-05, HR-06, HR-07 | Preparado: docker-compose.prod.yml (gateway, ollama, cloudflared; redes edge e models internal; endurecido; 9 testes), wiring do gateway (build_deps: auth, políticas YAML, fornecedores do models.yaml; /readyz), smoke_gateway.py, infra/cloudflare/README.md, runbooks/machine1-setup.md. Falta o OLEK: tunnel e DNS, preparar a Máquina 1, correr o smoke em https://gw.<domínio>/healthz |
-| F6-T08 | Fornecedor Hugging Face (opcional, fallback) | ⬜ | | |
+| F6-T08 | Fornecedor Hugging Face (opcional, fallback) | ✅ | 2026-11-22 | Alias rag-fallback-hf (external) no models.example.yaml, api_key_env + hf_endpoint_url/hf_api_key nas Settings, runbook huggingface-endpoint.md, teste live (HR-08 opcional: conta, token e endpoint) |
 
 ## F7 — BD central, tenancy e identidade
 

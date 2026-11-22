@@ -32,7 +32,7 @@ def _write(tmp_path: Path, models: dict[str, Any]) -> Path:
 
 def test_example_file_loads_and_exposes_aliases() -> None:
     registry = ModelRegistry.from_file(ROOT / "models.example.yaml")
-    assert registry.aliases == ["rag-default", "rag-embed"]
+    assert registry.aliases == ["rag-default", "rag-embed", "rag-fallback-hf"]
     llm = registry.get("rag-default")
     assert (llm.kind, llm.base_url_env, llm.external) == ("llm", "RAG_OLLAMA_URL", False)
     assert registry.get("rag-embed").dim == 1024

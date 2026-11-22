@@ -20,6 +20,17 @@ models:
     model: bge-m3
     license: MIT
     dim: 1024
+  # Fallback externo opcional (F6-T08): Inference Endpoint dedicado na UE do Hugging Face.
+  # `external: true` => o gateway redige a PII antes de enviar (INV-05/INV-17). Só dados de teste
+  # até haver DPA (ver docs/runbooks/huggingface-endpoint.md).
+  rag-fallback-hf:
+    kind: llm
+    backend: openai_compat
+    base_url_env: RAG_HF_ENDPOINT_URL
+    api_key_env: RAG_HF_API_KEY
+    model: tgi
+    license: Apache-2.0
+    external: true
   # Exemplo de modelo descarregado (ONNX, com prefixos E5). Preencher revisão e hashes reais:
   # rag-embed-onnx:
   #   kind: embedding

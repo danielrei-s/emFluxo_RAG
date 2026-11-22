@@ -138,6 +138,8 @@ class Settings(BaseSettings):
 
     local_data_dir: Path | None = None
     ollama_url: str | None = None
+    hf_endpoint_url: str | None = None  # Inference Endpoint dedicado na UE (F6-T08)
+    hf_api_key: SecretStr | None = None
 
     prompt_sentinel: SecretStr | None = None
     allowed_link_domains: Annotated[list[str], NoDecode] = Field(default_factory=list)

@@ -39,6 +39,7 @@ class ModelSpec(Frozen):
     model: str
     license: str
     base_url_env: str | None = None
+    api_key_env: str | None = None  # nome da definição com a chave (ex.: RAG_HF_API_KEY)
     revision: str | None = None
     files: tuple[ModelFileSpec, ...] = ()
     dim: int | None = None

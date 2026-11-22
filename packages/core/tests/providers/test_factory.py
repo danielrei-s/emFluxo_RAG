@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
+from pydantic import SecretStr
 from rag_core.config import Settings
 from rag_core.errors import ValidationFailed
 from rag_core.providers import OpenAICompatibleEmbedder, OpenAICompatibleLLM
@@ -100,7 +101,11 @@ def test_aliases_fastembed_embedder_and_reranker(
 
 
 def test_build_llm_providers_creates_one_per_llm_alias(tmp_path: Path) -> None:
-    settings = Settings.for_tests(ollama_url="http://127.0.0.1:11434/v1")
+    settings = Settings.for_tests(
+        ollama_url="http://127.0.0.1:11434/v1",
+        hf_endpoint_url="https://hf.test/v1",
+        hf_api_key=SecretStr("k"),
+    )
     providers = build_llm_providers(settings, EXAMPLE)
     assert "rag-default" in providers and "rag-embed" not in providers  # só kind: llm
     assert all(isinstance(p, OpenAICompatibleLLM) for p in providers.values())
