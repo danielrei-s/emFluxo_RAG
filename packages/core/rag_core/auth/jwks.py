@@ -171,6 +171,8 @@ class CompositeVerifier:
 
     def verify(self, token: str) -> dict[str, Any]:
         try:
+            # Só se lê o ``iss`` para escolher o verificador; este valida a assinatura a seguir.
+            # nosemgrep: python.jwt.security.unverified-jwt-decode.unverified-jwt-decode
             unverified = jwt.decode(token, options={"verify_signature": False})
         except jwt.PyJWTError as exc:
             raise Unauthenticated("malformed") from exc
