@@ -29,7 +29,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F1-T02 | Interfaces (`rag_core.interfaces`) | ✅ | main | |
 | F1-T03 | Política de acesso (`rag_core.policy`) | ✅ | main | |
 | F1-T04 | Fakes determinísticos (`rag_core.fakes`) | ✅ | main | Dep nova: rank-bm25 (Apache-2.0); BM25Plus em vez de Okapi (idf negativo em corpora pequenos) |
-| F1-T05 | Suite de contrato de `VectorStore` | ⬜ | | |
+| F1-T05 | Suite de contrato de `VectorStore` | ✅ | main | Suite validada com InMemory e com um store que recusa origem local (ramo do PgVectorStore) |
 
 ## F2 — Corpus sintético e golden set
 
