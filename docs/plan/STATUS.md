@@ -64,7 +64,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F4-T02 | Rerank, limiar de relevância e seleção final | ✅ | 2026-11-22 | retrieval/selection (select_context) e rerank (NoopReranker); 100% de cobertura |
 | F4-T03 | Construtor de prompt | ✅ | 2026-11-22 | generation/{constants,prompt_builder,prompts/system_pt.md}; snapshot do prompt revisto; NOT_FOUND passou para generation.constants; 100% de cobertura |
 | F4-T04 | Validador de citações e política de resposta | ✅ | 2026-11-22 | generation/citations (parse_citations, validate) e answer_policy (finalize, com 1 repetição); 100% de cobertura |
-| F4-T05 | Filtro de saída (servidor) | ⬜ | | |
+| F4-T05 | Filtro de saída (servidor) | ✅ | 2026-11-22 | generation/output_filter (sanitize_answer_markdown); citações [1][2] preservadas; 100% de cobertura |
 | F4-T06 | Tratamento da pergunta (limites, condensação, sinalização) | ⬜ | | |
 | F4-T07 | Redação de PII portuguesa com reidratação | ⬜ | | |
 | F4-T08 | Serviço de conversa (orquestrador, com e sem streaming) | ⬜ | | |
