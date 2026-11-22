@@ -60,7 +60,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
-| F4-T01 | Pesquisa híbrida com fusão RRF | ⬜ | | |
+| F4-T01 | Pesquisa híbrida com fusão RRF | ✅ | 2026-11-22 | retrieval/fusion (rrf_fuse) e hybrid (HybridRetriever); 100% de cobertura |
 | F4-T02 | Rerank, limiar de relevância e seleção final | ⬜ | | |
 | F4-T03 | Construtor de prompt | ⬜ | | |
 | F4-T04 | Validador de citações e política de resposta | ⬜ | | |
