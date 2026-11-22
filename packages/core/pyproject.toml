@@ -19,8 +19,8 @@ dependencies = [
 lite = ["olefile", "beautifulsoup4", "python-docx", "openpyxl", "python-pptx", "pdfplumber", "pypdfium2"]
 ocr = ["rapidocr-onnxruntime", "pillow"]
 docling = ["docling==2.151.1"]
-onnx = []
-st = []
+onnx = ["fastembed", "tokenizers"]
+st = ["sentence-transformers"]
 
 [dependency-groups]
 dev = [
@@ -32,6 +32,7 @@ dev = [
     "olefile",
     "pillow",
     "python-stdnum",
+    "tokenizers",
     "beautifulsoup4",
     "python-docx",
     "openpyxl",

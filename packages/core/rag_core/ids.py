@@ -5,12 +5,22 @@ from __future__ import annotations
 import hashlib
 import unicodedata
 import uuid
+from pathlib import Path
 
 
 def sha256_hex(data: bytes | str) -> str:
     """SHA-256 em hexadecimal; ``str`` é codificada em UTF-8."""
     raw = data.encode("utf-8") if isinstance(data, str) else data
     return hashlib.sha256(raw).hexdigest()
+
+
+def sha256_file(path: Path) -> str:
+    """SHA-256 de um ficheiro, lido em blocos (modelos grandes não vão para a memória)."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(block)
+    return digest.hexdigest()
 
 
 def normalize_rel_path(rel_path: str) -> str:
