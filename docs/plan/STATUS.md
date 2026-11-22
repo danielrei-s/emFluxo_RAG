@@ -45,7 +45,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F3-T01 | Deteção de tipo e validação de ficheiros | ✅ | 2026-11-22 | sniff/detect_type/validate_file; extra lite = olefile; OLE2 mínimo construído nos testes |
 | F3-T02 | Sanitização de texto e deteção de prompt injection | ✅ | 2026-11-22 | clean_text (Cc/Cf/Co/tags, NFC) e 9 regras de injection PT/EN; sem dependências novas |
 | F3-T03 | Base dos parsers, registo e formatos de texto (TXT, MD, CSV, HTML) | ✅ | 2026-11-22 | parsing/{base,registry,text,html}; beautifulsoup4 no extra lite; cobertura 100% |
-| F3-T04 | Parser DOCX (lite) | ⬜ | | |
+| F3-T04 | Parser DOCX (lite) | ✅ | 2026-11-22 | parsing/docx_lite; python-docx no extra lite; HIDDEN_FLAG movido para parsing.base |
 | F3-T05 | Parsers XLSX e PPTX (lite) | ⬜ | | |
 | F3-T06 | Parser PDF (lite) | ⬜ | | |
 | F3-T07 | Parser de email (EML) | ⬜ | | |

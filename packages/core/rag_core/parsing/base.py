@@ -6,6 +6,7 @@ import re
 from collections.abc import Sequence
 
 PARSER_VERSION = "lite-1"
+HIDDEN_FLAG = "hidden_text_removed"  # flag do bloco e aviso do documento (INV-06)
 
 
 def _cell(value: str) -> str:

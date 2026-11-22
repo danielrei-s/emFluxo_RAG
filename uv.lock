@@ -1449,6 +1449,7 @@ dependencies = [
 lite = [
     { name = "beautifulsoup4" },
     { name = "olefile" },
+    { name = "python-docx" },
 ]
 
 [package.dev-dependencies]
@@ -1461,6 +1462,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-socket" },
+    { name = "python-docx" },
     { name = "respx" },
     { name = "ruff" },
 ]
@@ -1473,6 +1475,7 @@ requires-dist = [
     { name = "olefile", marker = "extra == 'lite'" },
     { name = "pydantic", specifier = ">=2.10" },
     { name = "pydantic-settings" },
+    { name = "python-docx", marker = "extra == 'lite'" },
     { name = "pyyaml" },
     { name = "rank-bm25" },
     { name = "structlog" },
@@ -1489,6 +1492,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-socket" },
+    { name = "python-docx" },
     { name = "respx" },
     { name = "ruff" },
 ]

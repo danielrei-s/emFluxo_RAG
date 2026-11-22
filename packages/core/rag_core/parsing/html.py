@@ -8,10 +8,9 @@ from bs4 import BeautifulSoup, Comment, Doctype, Tag
 from bs4.element import NavigableString
 
 from rag_core.interfaces import ParseLimits
-from rag_core.parsing.base import PARSER_VERSION, markdown_table
+from rag_core.parsing.base import HIDDEN_FLAG, PARSER_VERSION, markdown_table
 from rag_core.types import Block, DetectedType, StructuredDocument
 
-HIDDEN_FLAG = "hidden_text_removed"
 _DROPPED = frozenset({"script", "style", "noscript", "template", "iframe", "head"})
 _HEADINGS = {f"h{n}": n for n in range(1, 7)}
 _HIDDEN_STYLE = re.compile(r"display\s*:\s*none|visibility\s*:\s*hidden", re.IGNORECASE)
