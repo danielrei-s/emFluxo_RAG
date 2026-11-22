@@ -18,5 +18,4 @@ scripts
 packages/ui
 packages/api-client
 packages/web-common
-services/central-api
 services/parser-sandbox

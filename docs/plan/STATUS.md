@@ -96,7 +96,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
-| F7-T01 | Runner de migrações, schemas, extensões e roles | ⬜ | | |
+| F7-T01 | Runner de migrações, schemas, extensões e roles | ✅ | 2026-11-22 | db_migrate.py (transação por ficheiro, checksum, advisory lock, dry-run), db_bootstrap_roles.py, 0001; novo membro services/central-api (psycopg, pgvector); testes de integração com testcontainers (7) + unitários; política de licenças aceita LGPL-*-only; make migrate |
 | F7-T02 | Esquema de tenancy com RLS forçado | ⬜ | | |
 | F7-T03 | Camada de acesso à BD com contexto de tenant | ⬜ | | |
 | F7-T04 | Documentos, chunks e `PgVectorStore` | ⬜ | | |

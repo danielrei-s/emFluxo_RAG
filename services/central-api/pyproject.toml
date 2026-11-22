@@ -1,0 +1,21 @@
+[project]
+name = "rag-central-api"
+version = "0.0.0"
+description = "Central API: BD central, tenancy, documentos e pesquisa federada (F7-F8)"
+requires-python = ">=3.12"
+dependencies = [
+    "rag-core",
+    "psycopg[binary]",
+    "psycopg-pool",
+    "pgvector",
+]
+
+[tool.uv.sources]
+rag-core = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["rag_central_api"]

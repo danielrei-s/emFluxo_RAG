@@ -34,8 +34,10 @@ profiles:
     allow: &server
       - *shipped
       - LGPL-2.1
+      - LGPL-2.1-only
       - LGPL-2.1-or-later
       - LGPL-3.0
+      - LGPL-3.0-only
       - LGPL-3.0-or-later
 
   # Dependências de desenvolvimento e CI: licenças OSI (ou equivalentes permissivas).

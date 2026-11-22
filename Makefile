@@ -30,7 +30,7 @@ test: ## Testes unitários (sem rede) Python e JS
 	pnpm -r test
 
 test-integration: ## Testes com Postgres (testcontainers)
-	@echo "ainda não implementado (F7-T01)"
+	uv run python scripts/db_migrate.py
 
 test-e2e: ## Testes end-to-end (Playwright)
 	@echo "ainda não implementado (F10-T01)"
@@ -57,7 +57,7 @@ fixtures: ## Gera o corpus sintético
 	uv run python scripts/make_fixtures.py
 
 migrate: ## Aplica as migrações da BD central
-	@echo "ainda não implementado (F7-T01)"
+	uv run python scripts/db_migrate.py
 
 up: ## Arranca o compose de desenvolvimento (postgres; perfis com COMPOSE_PROFILES)
 	docker compose -f $(COMPOSE_DEV) up -d --wait
