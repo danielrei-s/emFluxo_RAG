@@ -49,7 +49,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F3-T05 | Parsers XLSX e PPTX (lite) | ✅ | 2026-11-22 | parsing/xlsx_lite e pptx_lite; openpyxl + python-pptx no extra lite; aviso formula_without_cached_value via 2.ª leitura sem data_only |
 | F3-T06 | Parser PDF (lite) | ✅ | 2026-11-22 | parsing/pdf_lite + hidden_text_spans; pdfplumber + pypdfium2 no extra lite; exceção de licença pypdfium2 (ADR 0006) |
 | F3-T07 | Parser de email (EML) | ✅ | 2026-11-22 | parsing/eml; MSG levanta UnsupportedType no lite (HR-04 pendente, não bloqueante); sem dependências novas |
-| F3-T08 | OCR opcional (extra `ocr`) | ⬜ | | |
+| F3-T08 | OCR opcional (extra `ocr`) | ✅ | 2026-11-22 | OcrEngine + RapidOcrEngine (hash verificado antes de carregar), ImageParser, OCR 200 DPI no PdfParser; plano B: modelos do wheel em models.yaml; HR-27 aberto |
 | F3-T09 | Adaptador Docling (perfil full, central) | ⬜ | | |
 | F3-T10 | Sandbox de parsing (subprocesso com limites) | ⬜ | | |
 | F3-T11 | Chunker estrutural | ⬜ | | |

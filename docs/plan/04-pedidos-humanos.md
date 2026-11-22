@@ -32,6 +32,7 @@ Estes são os momentos em que um agente vai precisar do OLEK. Cada um já tem ID
 | HR-24 | Microsoft: registo de app Entra ID e consentimento de administrador | F15, F16 | Sim (conectores Microsoft) | IDs da app em `.env.local`; segredo no gestor |
 | HR-25 | Stripe e faturação certificada PT | F18-T04 | Sim (F18-T04) | Chaves no gestor de segredos |
 | HR-26 | Domínio de envio de email (Resend: SPF/DKIM) para convites | F8-T10, F9-T01 | Não (fake nos testes) | Confirmar DNS; chave da API no gestor de segredos |
+| HR-27 | Modelo de OCR latino (acentos portugueses) para o RapidOCR | F3-T08 | Não | Decisão por escrito; o agente fixa revisão e sha256 em `models.yaml` |
 
 ---
 

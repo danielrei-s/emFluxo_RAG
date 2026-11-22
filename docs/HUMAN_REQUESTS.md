@@ -159,3 +159,9 @@ Registo dos pedidos ao OLEK. Formato: Parte G3 do plano. Segredos nunca no chat.
 - **Preciso de:** Domínio de envio de email (Resend: SPF/DKIM) para convites
 - **Como entregar:** Confirmar DNS; chave da API no gestor de segredos
 - **Estado:** previsto
+
+### HR-27 · Modelo de OCR latino (acentos portugueses) para o RapidOCR
+- **Tarefa:** F3-T08 · **Bloqueante:** Não (o OCR é opcional e os testes não exigem acentos)
+- **Preciso de:** Indicar um modelo de reconhecimento latino em ONNX (ex.: PaddleOCR latin) com revisão fixa e licença compatível, ou aceitar a limitação do modelo embutido (PP-OCRv4 chinês/inglês)
+- **Como entregar:** Decisão por escrito; se houver modelo, o agente fixa a revisão e o sha256 no `models.yaml`
+- **Estado:** pedido (plano B em uso)

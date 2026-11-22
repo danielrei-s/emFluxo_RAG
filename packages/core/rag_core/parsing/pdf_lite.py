@@ -13,9 +13,12 @@ from pdfminer.pdfdocument import PDFEncryptionError
 from rag_core.errors import CorruptedFile, EncryptedFile, UnsupportedType, ValidationFailed
 from rag_core.interfaces import ParseLimits
 from rag_core.parsing.base import HIDDEN_FLAG, PARSER_VERSION
+from rag_core.parsing.ocr import OcrEngine
 from rag_core.types import Block, DetectedType, StructuredDocument
 
 NEEDS_OCR_FLAG = "needs_ocr"
+OCR_FLAG = "ocr"
+OCR_DPI = 200
 MIN_PAGE_CHARS = 20
 MIN_VISIBLE_SIZE = 1.0  # pt
 PARAGRAPH_GAP = 0.75  # intervalo entre linhas, em alturas de linha, que separa parágrafos
@@ -79,6 +82,33 @@ def _headings_by_page(data: bytes) -> dict[int, list[tuple[int, str]]]:
     return headings
 
 
+def _render_png(document: Any, page_number: int) -> bytes:
+    bitmap = document[page_number - 1].render(scale=OCR_DPI / 72)
+    buffer = io.BytesIO()
+    bitmap.to_pil().convert("RGB").save(buffer, format="PNG")
+    return buffer.getvalue()
+
+
+def _apply_ocr(data: bytes, blocks: list[Block], engine: OcrEngine) -> list[Block]:
+    """Substitui os blocos ``needs_ocr`` pelo texto reconhecido (flag ``ocr``)."""
+    pending = [b for b in blocks if NEEDS_OCR_FLAG in b.flags and b.page is not None]
+    if not pending:
+        return blocks
+    document = pypdfium2.PdfDocument(data)
+    try:
+        replaced: dict[int, Block] = {}
+        for index, block in enumerate(blocks):
+            if NEEDS_OCR_FLAG not in block.flags or block.page is None:
+                continue
+            lines = engine.recognize(_render_png(document, block.page))
+            if lines:
+                flags = (block.flags - {NEEDS_OCR_FLAG}) | {OCR_FLAG}
+                replaced[index] = block.model_copy(update={"text": " ".join(lines), "flags": flags})
+    finally:
+        document.close()
+    return [replaced.get(i, b) for i, b in enumerate(blocks)]
+
+
 def _open(data: bytes) -> Any:
     try:
         return pdfplumber.open(io.BytesIO(data))
@@ -112,6 +142,9 @@ class PdfParser:
     name = "lite-pdf"
     version = PARSER_VERSION
     supported = frozenset({DetectedType.PDF})
+
+    def __init__(self, ocr_engine: OcrEngine | None = None) -> None:
+        self._ocr = ocr_engine
 
     def parse(
         self, data: bytes, *, filename: str, detected: DetectedType, limits: ParseLimits
@@ -150,6 +183,8 @@ class PdfParser:
                     )
             except Exception as exc:  # erro de sintaxe a meio das páginas
                 raise CorruptedFile("pdf_unreadable") from exc
+        if limits.ocr and self._ocr is not None:
+            blocks = _apply_ocr(data, blocks, self._ocr)
         return StructuredDocument(
             detected_type=detected,
             blocks=tuple(blocks),
