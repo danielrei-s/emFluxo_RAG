@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, cast
 
 from starlette.exceptions import HTTPException as StarletteHTTPException
@@ -69,12 +70,24 @@ def problem_response(
     )
 
 
+_SAFE_CODE = re.compile(r"[a-z0-9_]{1,64}")
+
+
 def _rag_error(_: Request, exc: Exception) -> JSONResponse:
     error = cast(errors.RagError, exc)
     status = STATUS_BY_CODE.get(error.code, 500)
-    subcode = error.subcode if isinstance(error, errors.ValidationFailed) else None
-    headers = {"WWW-Authenticate": "Bearer"} if status == 401 else None
-    return problem_response(status, error.code, subcode=subcode, headers=headers)
+    subcode: str | None = None
+    if isinstance(error, errors.ValidationFailed):
+        subcode = error.subcode
+    elif error.detail_id and _SAFE_CODE.fullmatch(error.detail_id):  # códigos curtos, nunca texto
+        subcode = error.detail_id
+    headers: dict[str, str] = {}
+    if status == 401:
+        headers["WWW-Authenticate"] = "Bearer"
+    retry_after = getattr(error, "retry_after_s", None)
+    if retry_after is not None:
+        headers["Retry-After"] = str(int(retry_after))
+    return problem_response(status, error.code, subcode=subcode, headers=headers or None)
 
 
 def _http_error(_: Request, exc: Exception) -> JSONResponse:

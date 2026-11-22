@@ -135,7 +135,7 @@ def test_inv03_unhandled_error_returns_generic_problem(
         ("missing", 404, "not_found", None),
         ("limit", 429, "rate_limited", None),
         ("quota", 429, "quota_exceeded", None),
-        ("upstream", 502, "upstream_error", None),
+        ("upstream", 502, "upstream_error", "http_500"),
         ("big", 413, "file_too_large", None),
         ("type", 415, "unsupported_type", None),
         ("sandbox", 500, "sandbox_violation", None),
