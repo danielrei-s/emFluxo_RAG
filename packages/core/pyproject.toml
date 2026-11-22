@@ -12,6 +12,7 @@ dependencies = [
     "rank-bm25",
     "pyyaml",
     "psutil",
+    "langdetect",
 ]
 
 [project.optional-dependencies]
