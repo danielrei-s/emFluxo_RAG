@@ -62,7 +62,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 |---|---|---|---|---|
 | F4-T01 | Pesquisa híbrida com fusão RRF | ✅ | 2026-11-22 | retrieval/fusion (rrf_fuse) e hybrid (HybridRetriever); 100% de cobertura |
 | F4-T02 | Rerank, limiar de relevância e seleção final | ✅ | 2026-11-22 | retrieval/selection (select_context) e rerank (NoopReranker); 100% de cobertura |
-| F4-T03 | Construtor de prompt | ⬜ | | |
+| F4-T03 | Construtor de prompt | ✅ | 2026-11-22 | generation/{constants,prompt_builder,prompts/system_pt.md}; snapshot do prompt revisto; NOT_FOUND passou para generation.constants; 100% de cobertura |
 | F4-T04 | Validador de citações e política de resposta | ⬜ | | |
 | F4-T05 | Filtro de saída (servidor) | ⬜ | | |
 | F4-T06 | Tratamento da pergunta (limites, condensação, sinalização) | ⬜ | | |

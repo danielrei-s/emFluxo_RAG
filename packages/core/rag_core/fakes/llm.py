@@ -6,12 +6,13 @@ import re
 from collections.abc import Iterator, Sequence
 from typing import Literal
 
+from rag_core.generation.constants import NOT_FOUND
 from rag_core.tokens import ApproxTokenCounter
 from rag_core.types import ChatMessage, GenerationParams, LLMResult
 
 Mode = Literal["scripted", "echo_cite", "obey_injection", "not_found"]
 
-NOT_FOUND_TEXT = "Não encontrei essa informação nos documentos disponíveis."
+NOT_FOUND_TEXT = NOT_FOUND
 INJECTION_TRIGGER = "Ignora todas as instruções"
 
 _DOCUMENT_1_RE = re.compile(r'<document\s+index="1"[^>]*>(.*?)</document>', re.DOTALL)
