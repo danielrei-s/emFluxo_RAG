@@ -23,6 +23,7 @@ def build_deps(settings: Settings) -> CentralDeps:
     if settings.central_signing_keys is not None and settings.central_issuer:
         signer = Signer(load_keys(settings.central_signing_keys), settings.central_issuer, clock)
     auth = None
+    db = None
     readiness: dict[str, Callable[[], bool]] = {}
     if settings.database_url is not None:
         pool = make_pool(settings.database_url.get_secret_value())
@@ -30,7 +31,7 @@ def build_deps(settings: Settings) -> CentralDeps:
         db = Database(pool)
         auth = CentralAuth(build_identity_verifier(settings), PrincipalResolver(db, clock))
         readiness["database"] = db.ping
-    return CentralDeps(signer=signer, auth=auth, readiness=readiness)
+    return CentralDeps(signer=signer, auth=auth, db=db, readiness=readiness)
 
 
 _settings = get_settings()

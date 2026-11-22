@@ -113,7 +113,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F8-T03 | Worker de ingestão e contentor de parsing sem rede | ⬜ | | |
 | F8-T04 | Cliente do gateway | ✅ | 2026-11-22 | GatewayLLMClient (token de serviço por pedido com jti, SSE, mapeamento 400/403/413/429/5xx, Retry-After); 6 testes |
 | F8-T05 | Pesquisa federada, chat do Produto A e conversas | ⬜ | | |
-| F8-T06 | Endpoints internos para o gateway | ⬜ | | |
+| F8-T06 | Endpoints internos para o gateway | ✅ | 2026-11-22 | /internal/v1 (policy, usage, devices/status, principals/resolve, usage/month) com X-Internal-Key e 404 para cabeçalhos Cloudflare; migrações 0006 devices e 0007 usage; gateway: Central* providers com cache 60 s e wiring; 0006 antecipa a tabela do F8-T07 |
 | F8-T07 | Registo de dispositivos, licença e kill switch (servidor) | ⬜ | | |
 | F8-T08 | Encriptação envelope dos originais por tenant | ⬜ | | |
 | F8-T09 | Retenção, exportação e eliminação de tenant | ⬜ | | |

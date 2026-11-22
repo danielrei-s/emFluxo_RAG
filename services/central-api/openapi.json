@@ -1,4 +1,216 @@
 {
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "ResolveRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "device_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device Id"
+          },
+          "sub": {
+            "maxLength": 64,
+            "title": "Sub",
+            "type": "string"
+          },
+          "tenant_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tenant Id"
+          }
+        },
+        "required": [
+          "sub"
+        ],
+        "title": "ResolveRequest",
+        "type": "object"
+      },
+      "UsageBatch": {
+        "additionalProperties": false,
+        "properties": {
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/UsageEventIn"
+            },
+            "maxItems": 500,
+            "title": "Events",
+            "type": "array"
+          }
+        },
+        "required": [
+          "events"
+        ],
+        "title": "UsageBatch",
+        "type": "object"
+      },
+      "UsageEventIn": {
+        "additionalProperties": false,
+        "properties": {
+          "at": {
+            "format": "date-time",
+            "title": "At",
+            "type": "string"
+          },
+          "device_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device Id"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z0-9_]{1,64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "latency_ms": {
+            "minimum": 0.0,
+            "title": "Latency Ms",
+            "type": "integer"
+          },
+          "model": {
+            "maxLength": 64,
+            "title": "Model",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "error",
+              "rejected"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tenant_id": {
+            "title": "Tenant Id",
+            "type": "string"
+          },
+          "tokens_in": {
+            "minimum": 0.0,
+            "title": "Tokens In",
+            "type": "integer"
+          },
+          "tokens_out": {
+            "minimum": 0.0,
+            "title": "Tokens Out",
+            "type": "integer"
+          },
+          "ttft_ms": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ttft Ms"
+          },
+          "user_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Id"
+          }
+        },
+        "required": [
+          "tenant_id",
+          "model",
+          "tokens_in",
+          "tokens_out",
+          "latency_ms",
+          "status",
+          "at"
+        ],
+        "title": "UsageEventIn",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      }
+    }
+  },
   "info": {
     "title": "RAG Central API",
     "version": "0.0.0"
@@ -46,6 +258,252 @@
         "summary": "Processo vivo",
         "tags": [
           "ops"
+        ]
+      }
+    },
+    "/internal/v1/devices/{device_id}/status": {
+      "get": {
+        "operationId": "device_status_internal_v1_devices__device_id__status_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "device_id",
+            "required": true,
+            "schema": {
+              "title": "Device Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "user_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "User Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Device Status Internal V1 Devices  Device Id  Status Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Device Status",
+        "tags": [
+          "internal"
+        ]
+      }
+    },
+    "/internal/v1/principals/resolve": {
+      "post": {
+        "operationId": "resolve_principal_internal_v1_principals_resolve_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Resolve Principal Internal V1 Principals Resolve Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Resolve Principal",
+        "tags": [
+          "internal"
+        ]
+      }
+    },
+    "/internal/v1/tenants/{tenant_id}/policy": {
+      "get": {
+        "operationId": "tenant_policy_internal_v1_tenants__tenant_id__policy_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Tenant Policy",
+        "tags": [
+          "internal"
+        ]
+      }
+    },
+    "/internal/v1/tenants/{tenant_id}/usage/month": {
+      "get": {
+        "description": "Tokens (entrada + saída) dos pedidos ``ok`` do mês civil (UTC) corrente.",
+        "operationId": "usage_month_internal_v1_tenants__tenant_id__usage_month_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tenant_id",
+            "required": true,
+            "schema": {
+              "title": "Tenant Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "integer"
+                  },
+                  "title": "Response Usage Month Internal V1 Tenants  Tenant Id  Usage Month Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Usage Month",
+        "tags": [
+          "internal"
+        ]
+      }
+    },
+    "/internal/v1/usage": {
+      "post": {
+        "operationId": "record_usage_internal_v1_usage_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UsageBatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "integer"
+                  },
+                  "title": "Response Record Usage Internal V1 Usage Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Record Usage",
+        "tags": [
+          "internal"
         ]
       }
     },

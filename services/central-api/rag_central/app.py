@@ -16,6 +16,7 @@ from rag_core.web import install_standard_web
 
 from rag_central import __version__
 from rag_central.auth import CentralAuth
+from rag_central.db import Database
 from rag_central.signing import Signer
 
 # 8 MB chega para metadados; os ficheiros entram por um endpoint próprio (F8-T02).
@@ -28,6 +29,7 @@ class CentralDeps:
 
     signer: Signer | None = None
     auth: CentralAuth | None = None
+    db: Database | None = None
     readiness: Mapping[str, Callable[[], bool]] = field(default_factory=dict)
 
 

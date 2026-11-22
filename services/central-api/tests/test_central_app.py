@@ -70,4 +70,10 @@ def test_openapi_snapshot_matches() -> None:
     assert committed == render(build_openapi()), (
         "o openapi.json mudou: corre `make openapi` e faz commit do resultado"
     )
-    assert sorted(build_openapi()["paths"]) == ["/.well-known/jwks.json", "/healthz", "/readyz"]
+    paths = sorted(build_openapi()["paths"])
+    assert paths[:3] == [
+        "/.well-known/jwks.json",
+        "/healthz",
+        "/internal/v1/devices/{device_id}/status",
+    ]
+    assert "/internal/v1/usage" in paths and "/internal/v1/principals/resolve" in paths
