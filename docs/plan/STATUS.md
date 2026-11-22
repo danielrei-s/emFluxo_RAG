@@ -77,7 +77,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F5-T02 | Adaptadores de modelos reais e registo de modelos | ✅ | 2026-11-22 | providers/{openai_compat,fastembed_provider,cross_encoder,hf_tokens,model_registry}; models.example.yaml; tokenizers no extra onnx e dev; fastembed/sentence-transformers só validados com modelos falsos; teste live (Ollama) por correr na Máquina 1 (HR-05); 100% de cobertura |
 | F5-T03 | CLI `rag` | ✅ | 2026-11-22 | packages/cli (rag ingest/ask/models check; eval ainda stub até F5-T04); rag_core.manifest.CorpusManifest partilhado com testing.corpus; typer; modelos reais só validados com models.example.yaml |
 | F5-T04 | Harness de avaliação | ✅ | 2026-11-22 | evals/{metrics,runner}; rag eval (compara com evals/baseline.fake.json e thresholds.yaml); make eval; job eval no CI; golden: removidos must_not_contain de canários legítimos (A-Q040, B-Q003/4); providers/factory partilhado com a CLI; mypy e testes cobrem packages/cli |
-| F5-T05 | Benchmark e escolha de modelos (com o OLEK) | ⬜ | | |
+| F5-T05 | Benchmark e escolha de modelos (com o OLEK) | ⛔ | HR-05 | Preparado: evals/bench/run_bench.py (+README, `make bench`, teste de ensaio com fakes), build_models com aliases e reranker, ADR-0009 em "proposta". Falta o OLEK correr o benchmark na Máquina 1 e aprovar a ADR-0009 (dimensão D bloqueia F7-T04) |
 
 ## F6 — Inference Gateway · Marco M2
 

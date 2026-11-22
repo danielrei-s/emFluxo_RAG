@@ -4,7 +4,7 @@ SHELL := bash
 
 COMPOSE_DEV := infra/compose/docker-compose.dev.yml
 
-.PHONY: help setup setup-full lint test test-integration test-e2e eval eval-live \
+.PHONY: help setup setup-full lint test test-integration test-e2e eval eval-live bench \
 	security licenses openapi fixtures migrate up down hooks
 
 help: ## Lista os alvos disponíveis
@@ -40,6 +40,9 @@ eval: ## Avaliação com fakes (compara com a baseline; falha se houver regress�
 
 eval-live: ## Avaliação com modelos reais (precisa de models.yaml e do servidor de modelos)
 	uv run rag eval --golden evals/golden --report out/eval-live
+
+bench: ## Benchmark de modelos reais (F5-T05; precisa da Máquina 1)
+	uv run python evals/bench/run_bench.py --out evals/bench/results-latest.md
 
 security: ## Segredos no histórico git (gitleaks); semgrep e audits correm no CI
 	uv run pre-commit run gitleaks-history --all-files --hook-stage manual
