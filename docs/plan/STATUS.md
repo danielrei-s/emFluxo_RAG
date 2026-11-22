@@ -111,7 +111,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F8-T01 | Esqueleto da Central API, chaves de assinatura e JWKS | ✅ | 2026-11-22 | create_app (/v1, /internal/v1, /backoffice/v1, sem CORS), Signer Ed25519 (JWKS só público, rotação, tokens de serviço e de licença), main com wiring graceful, Dockerfile não-root validado, openapi.json; 10 testes |
 | F8-T02 | API de documentos (upload, listagem, detalhe, ACL, conteúdo, eliminação) | ⬜ | | |
 | F8-T03 | Worker de ingestão e contentor de parsing sem rede | ⬜ | | |
-| F8-T04 | Cliente do gateway | ⬜ | | |
+| F8-T04 | Cliente do gateway | ✅ | 2026-11-22 | GatewayLLMClient (token de serviço por pedido com jti, SSE, mapeamento 400/403/413/429/5xx, Retry-After); 6 testes |
 | F8-T05 | Pesquisa federada, chat do Produto A e conversas | ⬜ | | |
 | F8-T06 | Endpoints internos para o gateway | ⬜ | | |
 | F8-T07 | Registo de dispositivos, licença e kill switch (servidor) | ⬜ | | |

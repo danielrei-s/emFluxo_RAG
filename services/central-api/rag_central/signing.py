@@ -8,6 +8,7 @@ O JWKS publicado só tem material público.
 from __future__ import annotations
 
 import json
+import uuid
 from dataclasses import dataclass
 from datetime import timedelta
 from typing import Any
@@ -97,6 +98,7 @@ class Signer:
             "sub": subject,
             "iat": int(now.timestamp()),
             "exp": int((now + ttl).timestamp()),
+            "jti": uuid.uuid4().hex,  # um identificador por token
         }
 
     def mint_service_token(

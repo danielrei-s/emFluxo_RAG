@@ -83,7 +83,7 @@ def test_entitlement_token_is_contentless_and_lasts_seven_days() -> None:
     assert claims["exp"] - claims["iat"] == int(timedelta(days=7).total_seconds())
     assert datetime.fromtimestamp(claims["exp"], UTC) > datetime.now(UTC)
     assert set(claims) == {
-        "iss", "aud", "sub", "iat", "exp", "typ", "tenant_id", "device_id", "products",
+        "iss", "aud", "sub", "iat", "exp", "jti", "typ", "tenant_id", "device_id", "products",
     }  # fmt: skip
 
 
