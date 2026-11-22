@@ -47,3 +47,8 @@ def test_unknown_ids_raise() -> None:
         corpus.principal_for("aurora", "ninguem")
     with pytest.raises(KeyError):
         corpus.principal_for("nada", "ana")
+
+
+def test_unknown_tenant_slug_has_no_id() -> None:
+    with pytest.raises(KeyError):
+        corpus.tenant_id("nada")

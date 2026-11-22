@@ -97,3 +97,10 @@ def test_acl_probes_cover_the_c11_cases() -> None:
     assert ("carla", "not_found") in by_user  # admin não vê salários sem o grupo rh
     assert ("rui", "grounded") in by_user
     assert Path(GOLDEN_DIR).name == "golden"
+
+
+def test_load_golden_rejects_non_list(tmp_path: Path) -> None:
+    bad = tmp_path / "bad.yaml"
+    bad.write_text("id: A-Q001\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="lista"):
+        load_golden(bad)

@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-lite = []
+lite = ["olefile"]
 ocr = []
 docling = []
 onnx = []
@@ -27,6 +27,8 @@ dev = [
     "pytest-socket",
     "hypothesis",
     "respx",
+    "olefile",
+    "pillow",
     "mypy",
     "ruff",
 ]
