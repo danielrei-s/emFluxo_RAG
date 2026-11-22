@@ -69,6 +69,22 @@ class RateLimited(RagError):
     code = "rate_limited"
 
 
+class BadRequest(RagError):
+    """Pedido malformado (HTTP 400): campo desconhecido, valor fora dos limites."""
+
+    code = "bad_request"
+
+
+class UnsupportedFeature(RagError):
+    """Funcionalidade fora do subconjunto suportado (HTTP 400; ex.: ``tools``, imagens, INV-09)."""
+
+    code = "unsupported_feature"
+
+
+class PromptTooLarge(RagError):
+    code = "prompt_too_large"
+
+
 class UpstreamError(RagError):
     code = "upstream_error"
 

@@ -5,12 +5,13 @@ from __future__ import annotations
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from rag_core.config import Settings
 
 from rag_gateway import __version__
 from rag_gateway.auth import Authenticator
+from rag_gateway.chat import ChatService, build_router
 from rag_gateway.middleware import install_middleware
 
 
@@ -20,6 +21,7 @@ class GatewayDeps:
 
     readiness: Mapping[str, Callable[[], bool]] = field(default_factory=dict)
     authenticator: Authenticator | None = None
+    chat: ChatService | None = None
 
 
 def create_app(settings: Settings, deps: GatewayDeps | None = None) -> FastAPI:
@@ -35,6 +37,7 @@ def create_app(settings: Settings, deps: GatewayDeps | None = None) -> FastAPI:
     app.state.settings = settings
     app.state.deps = deps
     install_middleware(app)
+    app.include_router(build_router(_chat_service))
 
     @app.get("/healthz", tags=["ops"], summary="Processo vivo")
     def healthz() -> dict[str, str]:
@@ -57,3 +60,8 @@ def _safe(check: Callable[[], bool]) -> bool:
         return bool(check())
     except Exception:  # uma verificação que falha conta como "não pronto", sem expor o erro
         return False
+
+
+def _chat_service(request: Request) -> ChatService | None:
+    service: ChatService | None = request.app.state.deps.chat
+    return service

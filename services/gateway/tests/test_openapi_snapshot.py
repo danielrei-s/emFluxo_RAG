@@ -12,7 +12,7 @@ def test_openapi_snapshot_matches() -> None:
     )
 
 
-def test_openapi_lists_only_the_ops_endpoints_for_now() -> None:
+def test_openapi_lists_the_ops_and_chat_endpoints() -> None:
     schema = build_openapi()
-    assert sorted(schema["paths"]) == ["/healthz", "/readyz"]
+    assert sorted(schema["paths"]) == ["/healthz", "/readyz", "/v1/chat/completions"]
     assert schema["info"]["title"] == "RAG Inference Gateway"
