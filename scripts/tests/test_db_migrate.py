@@ -26,12 +26,15 @@ def test_checksum_ignores_line_endings() -> None:
     assert dm.checksum_of("a") != dm.checksum_of("b")
 
 
-def test_discover_rejects_bad_names_and_gaps(tmp_path: Path) -> None:
+def test_discover_rejects_bad_names_and_duplicates_but_allows_gaps(tmp_path: Path) -> None:
     (tmp_path / "0001_ok.sql").write_text("select 1;", encoding="utf-8")
     (tmp_path / "0003_gap.sql").write_text("select 1;", encoding="utf-8")
-    with pytest.raises(dm.MigrationError, match="non_contiguous_versions"):
+    assert [m.version for m in dm.discover(tmp_path)] == ["0001", "0003"]  # a 0002 vem depois
+    (tmp_path / "0003_outra.sql").write_text("select 2;", encoding="utf-8")
+    with pytest.raises(dm.MigrationError, match="duplicate_versions"):
         dm.discover(tmp_path)
     (tmp_path / "0003_gap.sql").unlink()
+    (tmp_path / "0003_outra.sql").unlink()
     (tmp_path / "Mau-Nome.sql").write_text("select 1;", encoding="utf-8")
     with pytest.raises(dm.MigrationError, match="invalid_filename"):
         dm.discover(tmp_path)

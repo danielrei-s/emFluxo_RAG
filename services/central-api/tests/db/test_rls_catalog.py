@@ -13,6 +13,7 @@ pytestmark = [pytest.mark.integration, pytest.mark.enable_socket]
 
 # Tabelas sem RLS (têm de estar sem qualquer grant para as roles da aplicação).
 NO_RLS_ALLOWLIST = {"platform_staff"}
+BACKOFFICE_WRITES = {"audit_log", "audit_heads"}  # só eventos de plataforma (RLS)
 APP_ROLES = ("app_user_role", "app_worker_role", "anon", "authenticated")
 
 
@@ -82,6 +83,8 @@ def test_app_roles_only_get_explicit_grants_and_never_on_staff(rls: Rls) -> None
 def test_inv23_backoffice_has_no_write_privileges(rls: Rls) -> None:
     with psycopg.connect(rls.admin_dsn) as conn:
         for name, *_ in _tables(rls):
+            if name in BACKOFFICE_WRITES:
+                continue
             writes = conn.execute(
                 "select bool_or(has_table_privilege('app_backoffice_role', %s, p)) "
                 "from unnest(array['INSERT', 'UPDATE', 'DELETE']) as p",

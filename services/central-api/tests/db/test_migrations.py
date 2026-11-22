@@ -50,7 +50,7 @@ def test_checksum_tamper_detected(db: str, tmp_path: Path) -> None:
 def test_failed_migration_rolls_back_and_is_not_recorded(db: str, tmp_path: Path) -> None:
     copy = tmp_path / "migrations"
     shutil.copytree(MIGRATIONS_DIR, copy)
-    (copy / f"{len(ALL_FILES) + 1:04d}_broken.sql").write_text(
+    (copy / f"{int(discover()[-1].version) + 1:04d}_broken.sql").write_text(
         "create table app.t (id int);\nselect 1/0;\n", encoding="utf-8"
     )
     with pytest.raises(psycopg.errors.DivisionByZero):

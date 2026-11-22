@@ -49,7 +49,7 @@ def checksum_of(sql: str) -> str:
 
 
 def discover(directory: Path = MIGRATIONS_DIR) -> list[Migration]:
-    """Ficheiros ``NNNN_nome.sql`` por ordem; as versões têm de ser 0001, 0002, ... sem falhas."""
+    """Ficheiros ``NNNN_nome.sql`` por ordem de versão; as versões não se repetem."""
     found: list[Migration] = []
     for path in sorted(directory.glob("*.sql")):
         match = _NAME.match(path.name)
@@ -57,9 +57,9 @@ def discover(directory: Path = MIGRATIONS_DIR) -> list[Migration]:
             raise MigrationError(f"invalid_filename:{path.name}")
         sql = path.read_text(encoding="utf-8")
         found.append(Migration(match.group(1), path.name, sql, checksum_of(sql)))
-    expected = [f"{i:04d}" for i in range(1, len(found) + 1)]
-    if [m.version for m in found] != expected:
-        raise MigrationError("non_contiguous_versions")
+    versions = [m.version for m in found]
+    if len(set(versions)) != len(versions):
+        raise MigrationError("duplicate_versions")  # lacunas são aceites (migrações adiadas)
     return found
 
 
