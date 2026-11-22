@@ -147,11 +147,29 @@ def test_get_settings_is_cached(monkeypatch: pytest.MonkeyPatch) -> None:
     assert first.log_level == "WARNING"
 
 
+# Únicas exceções: o ambiente mínimo do sandbox e o parser de teste que o inspeciona.
+ENVIRON_ALLOWLIST = {"ingestion/sandbox_env.py", "testing/sandbox_parsers.py"}
+
+
 def test_no_other_module_reads_environ_directly() -> None:
     pattern = re.compile(r"os\.environ|os\.getenv|getenv\(")
     offenders = [
-        str(path.relative_to(CORE_SRC))
+        path.relative_to(CORE_SRC).as_posix()
         for path in CORE_SRC.rglob("*.py")
         if pattern.search(path.read_text(encoding="utf-8"))
     ]
-    assert offenders == []
+    assert sorted(offenders) == sorted(ENVIRON_ALLOWLIST)
+
+
+def test_sandbox_environment_only_copies_allowlisted_keys(monkeypatch: pytest.MonkeyPatch) -> None:
+    from rag_core.ingestion.sandbox_env import ALLOWED_KEYS, FIXED, sandbox_environment
+
+    monkeypatch.setenv("RAG_SUPABASE_SERVICE_ROLE_KEY", "segredo")
+    monkeypatch.setenv("OPENAI_API_KEY", "segredo")
+    monkeypatch.setenv("PATH", "/bin")
+    monkeypatch.delenv("HF_HOME", raising=False)
+    env = sandbox_environment()
+    assert set(env) <= set(ALLOWED_KEYS) | set(FIXED)
+    assert env["PATH"] == "/bin"
+    assert "HF_HOME" not in env
+    assert "segredo" not in env.values()

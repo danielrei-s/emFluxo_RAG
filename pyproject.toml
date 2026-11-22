@@ -29,3 +29,7 @@ markers = [
     "windows_only: só corre em Windows",
     "e2e: Playwright (nightly e antes de marcos)",
 ]
+
+[tool.coverage.run]
+# Corre só dentro do subprocesso do sandbox (o coverage não o mede lá).
+omit = ["*/rag_core/testing/sandbox_parsers.py"]

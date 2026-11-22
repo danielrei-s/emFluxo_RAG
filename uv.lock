@@ -2770,6 +2770,7 @@ source = { editable = "packages/core" }
 dependencies = [
     { name = "httpx" },
     { name = "numpy" },
+    { name = "psutil" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pyyaml" },
@@ -2826,6 +2827,7 @@ requires-dist = [
     { name = "openpyxl", marker = "extra == 'lite'" },
     { name = "pdfplumber", marker = "extra == 'lite'" },
     { name = "pillow", marker = "extra == 'ocr'" },
+    { name = "psutil" },
     { name = "pydantic", specifier = ">=2.10" },
     { name = "pydantic-settings" },
     { name = "pypdfium2", marker = "extra == 'lite'" },
