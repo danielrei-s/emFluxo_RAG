@@ -1449,7 +1449,9 @@ dependencies = [
 lite = [
     { name = "beautifulsoup4" },
     { name = "olefile" },
+    { name = "openpyxl" },
     { name = "python-docx" },
+    { name = "python-pptx" },
 ]
 
 [package.dev-dependencies]
@@ -1458,11 +1460,13 @@ dev = [
     { name = "hypothesis" },
     { name = "mypy" },
     { name = "olefile" },
+    { name = "openpyxl" },
     { name = "pillow" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-socket" },
     { name = "python-docx" },
+    { name = "python-pptx" },
     { name = "respx" },
     { name = "ruff" },
 ]
@@ -1473,9 +1477,11 @@ requires-dist = [
     { name = "httpx" },
     { name = "numpy" },
     { name = "olefile", marker = "extra == 'lite'" },
+    { name = "openpyxl", marker = "extra == 'lite'" },
     { name = "pydantic", specifier = ">=2.10" },
     { name = "pydantic-settings" },
     { name = "python-docx", marker = "extra == 'lite'" },
+    { name = "python-pptx", marker = "extra == 'lite'" },
     { name = "pyyaml" },
     { name = "rank-bm25" },
     { name = "structlog" },
@@ -1488,11 +1494,13 @@ dev = [
     { name = "hypothesis" },
     { name = "mypy" },
     { name = "olefile" },
+    { name = "openpyxl" },
     { name = "pillow" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "pytest-socket" },
     { name = "python-docx" },
+    { name = "python-pptx" },
     { name = "respx" },
     { name = "ruff" },
 ]
