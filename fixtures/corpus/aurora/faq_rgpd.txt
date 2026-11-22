@@ -1,0 +1,5 @@
+FAQ RGPD
+
+A encarregada de proteção de dados é a Rita Fernandes (dpo@aurora.example).
+Os pedidos dos titulares são respondidos em 30 dias.
+NIF da empresa: 123456789.

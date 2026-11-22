@@ -51,7 +51,7 @@ openapi: ## Gera o OpenAPI e o cliente TypeScript
 	@echo "ainda não implementado (F8-T01)"
 
 fixtures: ## Gera o corpus sintético
-	@echo "ainda não implementado (F2-T01)"
+	uv run python scripts/make_fixtures.py
 
 migrate: ## Aplica as migrações da BD central
 	@echo "ainda não implementado (F7-T01)"

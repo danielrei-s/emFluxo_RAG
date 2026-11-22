@@ -1,0 +1,8 @@
+# Fins de linha: LF no repo; o corpus sintético nunca é convertido (os hashes do manifest têm de bater).
+* text=auto eol=lf
+fixtures/corpus/** -text
+*.pdf binary
+*.xlsx binary
+*.docx binary
+*.docm binary
+*.pptx binary

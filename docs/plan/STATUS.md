@@ -35,7 +35,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
-| F2-T01 | Gerador do corpus sintético | ⬜ | | |
+| F2-T01 | Gerador do corpus sintético | ✅ | 2026-11-22 | 15 docs + 6 inválidos em fixtures/corpus; manifest com sha256; Pillow MIT-CMU permitida em dev |
 | F2-T02 | Golden set v0 e validador | ⬜ | | |
 
 ## F3 — Ingestão (core)

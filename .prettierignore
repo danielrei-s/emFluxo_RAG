@@ -7,3 +7,4 @@ target
 docs/plan
 docs/spec
 docs/*.md
+fixtures/corpus/

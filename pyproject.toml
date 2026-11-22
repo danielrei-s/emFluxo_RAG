@@ -12,7 +12,7 @@ members = ["packages/core"]
 rag-core = { workspace = true }
 
 [dependency-groups]
-dev = ["rag-core", "pip-licenses", "pyyaml", "pre-commit"]
+dev = ["rag-core", "pip-licenses", "pyyaml", "pre-commit", "reportlab", "python-docx", "openpyxl", "python-pptx", "pypdf", "Pillow"]
 
 [tool.pytest.ini_options]
 # O -m por omissão exclui os níveis pesados (C10); um -m na linha de comandos substitui-o.
