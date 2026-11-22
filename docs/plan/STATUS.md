@@ -66,7 +66,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F4-T04 | Validador de citações e política de resposta | ✅ | 2026-11-22 | generation/citations (parse_citations, validate) e answer_policy (finalize, com 1 repetição); 100% de cobertura |
 | F4-T05 | Filtro de saída (servidor) | ✅ | 2026-11-22 | generation/output_filter (sanitize_answer_markdown); citações [1][2] preservadas; 100% de cobertura |
 | F4-T06 | Tratamento da pergunta (limites, condensação, sinalização) | ✅ | 2026-11-22 | generation/query (validate_question, retrieval_query, signal_injection); 100% de cobertura |
-| F4-T07 | Redação de PII portuguesa com reidratação | ⬜ | | |
+| F4-T07 | Redação de PII portuguesa com reidratação | ✅ | 2026-11-22 | pii/{validators,recognizers,redactor}; python-stdnum só no grupo dev; validadores iguais ao stdnum em testes aleatórios; 100% de cobertura |
 | F4-T08 | Serviço de conversa (orquestrador, com e sem streaming) | ⬜ | | |
 
 ## F5 — Store local, modelos reais, CLI e avaliação · Marco M1

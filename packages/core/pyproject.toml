@@ -31,6 +31,7 @@ dev = [
     "respx",
     "olefile",
     "pillow",
+    "python-stdnum",
     "beautifulsoup4",
     "python-docx",
     "openpyxl",
