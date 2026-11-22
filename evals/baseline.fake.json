@@ -1,0 +1,14 @@
+{
+  "config": "fake",
+  "metrics": {
+    "n": 62,
+    "recall_at_5": 0.9302325581395349,
+    "mrr": 0.8830749354005167,
+    "ndcg_at_5": 0.888619874219189,
+    "citation_validity_rate": 1.0,
+    "fallback_rate": 0.0,
+    "not_found_accuracy": 0.17647058823529413,
+    "answer_contains_rate": 0.5581395348837209,
+    "leak_rate": 0.0
+  }
+}

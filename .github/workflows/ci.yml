@@ -30,9 +30,22 @@ jobs:
       - name: ruff
         run: uv run ruff check .
       - name: mypy
-        run: uv run mypy packages/core
+        run: uv run mypy packages/core packages/cli
       - name: pytest com cobertura
         run: uv run pytest --cov=rag_core --cov-report=term-missing
+
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+      - name: Instalar dependências
+        run: uv sync --all-packages --frozen
+      - name: Avaliação com fakes (compara com a baseline)
+        run: make eval
+      - name: Resumo da avaliação
+        if: always()
+        run: cat out/eval/report.md >> "$GITHUB_STEP_SUMMARY"
 
   js:
     runs-on: ubuntu-latest

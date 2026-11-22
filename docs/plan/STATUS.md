@@ -76,7 +76,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F5-T01 | Store SQLite (CLI e base do motor local) | ✅ | 2026-11-22 | stores/{sqlite_store,keyword_index}; suite de contrato com FTS5 e com fallback BM25; cache de matriz invalidada também por outras ligações (data_version); ruff: S608 ignorado só em stores/*.py; 100% de cobertura |
 | F5-T02 | Adaptadores de modelos reais e registo de modelos | ✅ | 2026-11-22 | providers/{openai_compat,fastembed_provider,cross_encoder,hf_tokens,model_registry}; models.example.yaml; tokenizers no extra onnx e dev; fastembed/sentence-transformers só validados com modelos falsos; teste live (Ollama) por correr na Máquina 1 (HR-05); 100% de cobertura |
 | F5-T03 | CLI `rag` | ✅ | 2026-11-22 | packages/cli (rag ingest/ask/models check; eval ainda stub até F5-T04); rag_core.manifest.CorpusManifest partilhado com testing.corpus; typer; modelos reais só validados com models.example.yaml |
-| F5-T04 | Harness de avaliação | ⬜ | | |
+| F5-T04 | Harness de avaliação | ✅ | 2026-11-22 | evals/{metrics,runner}; rag eval (compara com evals/baseline.fake.json e thresholds.yaml); make eval; job eval no CI; golden: removidos must_not_contain de canários legítimos (A-Q040, B-Q003/4); providers/factory partilhado com a CLI; mypy e testes cobrem packages/cli |
 | F5-T05 | Benchmark e escolha de modelos (com o OLEK) | ⬜ | | |
 
 ## F6 — Inference Gateway · Marco M2

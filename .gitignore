@@ -49,3 +49,4 @@ Thumbs.db
 
 # Modelos do Docling pré-descarregados (F3-T09)
 .docling-artifacts/
+out/

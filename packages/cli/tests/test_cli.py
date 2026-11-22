@@ -120,7 +120,6 @@ def test_exit_codes_on_errors(
     unknown = ["--tenant", "nada", "--manifest", str(MANIFEST), "--fake-models"]
     assert run("ingest", str(empty), "--db", str(tmp_path / "x.db"), *unknown) == 0  # nada a fazer
     assert run("ask", "olá?", "--manifest", str(tmp_path / "falta.yaml"), "--fake-models") == 2
-    assert run("eval") == 3  # ainda sem harness
     # sem --fake-models e sem models.yaml, falha com erro claro
     monkeypatch.chdir(tmp_path)
     result = runner.invoke(app, ["ask", "olá?", "--db", str(tmp_path / "y.db")])

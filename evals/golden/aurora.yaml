@@ -429,8 +429,6 @@
     - A07
   expected_answer_contains:
     - "1350"
-  must_not_contain:
-    - CANARIO-RH
 - id: A-Q041
   tenant: aurora
   user: ana

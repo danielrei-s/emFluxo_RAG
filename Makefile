@@ -35,11 +35,11 @@ test-integration: ## Testes com Postgres (testcontainers)
 test-e2e: ## Testes end-to-end (Playwright)
 	@echo "ainda não implementado (F10-T01)"
 
-eval: ## Avaliação com fakes
-	@echo "ainda não implementado (F5-T04)"
+eval: ## Avaliação com fakes (compara com a baseline; falha se houver regressões)
+	uv run rag eval --fake-models --golden evals/golden --report out/eval --baseline evals/baseline.fake.json
 
-eval-live: ## Avaliação com modelos reais
-	@echo "ainda não implementado (F5-T05)"
+eval-live: ## Avaliação com modelos reais (precisa de models.yaml e do servidor de modelos)
+	uv run rag eval --golden evals/golden --report out/eval-live
 
 security: ## Segredos no histórico git (gitleaks); semgrep e audits correm no CI
 	uv run pre-commit run gitleaks-history --all-files --hook-stage manual

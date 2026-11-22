@@ -32,8 +32,6 @@
     - B02
   expected_answer_contains:
     - "95"
-  must_not_contain:
-    - CANARIO
 - id: B-Q004
   tenant: boreal
   user: bruno
@@ -43,8 +41,6 @@
     - B02
   expected_answer_contains:
     - "55"
-  must_not_contain:
-    - CANARIO
 - id: B-Q005
   tenant: boreal
   user: bruno
