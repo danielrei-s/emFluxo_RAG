@@ -54,7 +54,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F3-T10 | Sandbox de parsing (subprocesso com limites) | ✅ | 2026-11-22 | ingestion/sandbox{,_worker,_env}; psutil; audit hook + vigilância RSS; test_config com lista branca de leitura do ambiente; RLIMIT_* (POSIX) só validado no CI |
 | F3-T11 | Chunker estrutural | ✅ | 2026-11-22 | ingestion/chunking: ChunkDraft, chunk_document, embedding_text; 100% de cobertura; parágrafos grandes entram frase a frase para a sobreposição caber |
 | F3-T12 | Montagem de chunks (metadados, hashes, idioma, flags) | ✅ | 2026-11-22 | ingestion/metadata: build_chunks, detect_language (langdetect, seed 0); langdetect como dependência base |
-| F3-T13 | Serviço de ingestão incremental | ⬜ | | |
+| F3-T13 | Serviço de ingestão incremental | ✅ | 2026-11-22 | ingestion/pipeline: IngestionService (ingest_file, delete, sync_workspace), anexos até profundidade 2 rastreados em memória (limitação documentada, F7 traz parent_doc_id); gate da F3 cumprido; corpus ingerido via sandbox real |
 
 ## F4 — Recuperação e geração (core)
 

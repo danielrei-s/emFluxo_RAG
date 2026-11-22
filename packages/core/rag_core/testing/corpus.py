@@ -89,3 +89,28 @@ def read_bytes(manifest_id: str) -> bytes:
 def all_canaries() -> frozenset[str]:
     """Todos os canários do manifest (nunca podem aparecer em respostas nem logs)."""
     return frozenset(c for doc in load_manifest()["documents"] for c in doc["canaries"])
+
+
+def invalid_files() -> list[str]:
+    """Nomes dos ficheiros inválidos do corpus (``fixtures/corpus/invalid``)."""
+    return [Path(e["file"]).name for e in load_manifest()["invalid"]]
+
+
+def read_invalid(filename: str) -> bytes:
+    """Conteúdo de um ficheiro inválido do corpus."""
+    return (CORPUS_DIR / "invalid" / filename).read_bytes()
+
+
+def invalid_source(filename: str) -> SourceFile:
+    """``SourceFile`` (tenant Aurora, visível a todos) para um ficheiro inválido."""
+    if filename not in invalid_files():
+        raise KeyError(filename)
+    doc_id = doc_uuid(f"invalid/{filename}")
+    return SourceFile(
+        tenant_id=tenant_id("aurora"),
+        workspace_id=_stable_id("workspace", "aurora"),
+        doc_id=doc_id,
+        source_uri=f"upload://{doc_id}/{filename}",
+        filename=filename,
+        acl=Acl(all_members=True),
+    )
