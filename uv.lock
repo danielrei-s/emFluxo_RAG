@@ -3186,6 +3186,7 @@ dependencies = [
     { name = "psycopg", extra = ["binary"] },
     { name = "psycopg-pool" },
     { name = "rag-core", extra = ["auth", "web"] },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
@@ -3195,6 +3196,7 @@ requires-dist = [
     { name = "psycopg", extras = ["binary"] },
     { name = "psycopg-pool" },
     { name = "rag-core", extras = ["web", "auth"], editable = "packages/core" },
+    { name = "uvicorn" },
 ]
 
 [[package]]

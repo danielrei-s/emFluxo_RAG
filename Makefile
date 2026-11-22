@@ -50,8 +50,9 @@ security: ## Segredos no histórico git (gitleaks); semgrep e audits correm no C
 licenses: ## Verificação de licenças por perfil (server e dev; shipped em F11-T12)
 	uv run python scripts/check_licenses.py --profile server --profile dev
 
-openapi: ## Gera o OpenAPI (gateway; o cliente TypeScript chega com F8-T01)
+openapi: ## Gera o OpenAPI (gateway e Central API)
 	uv run python services/gateway/rag_gateway/export_openapi.py
+	uv run python services/central-api/rag_central/export_openapi.py
 
 fixtures: ## Gera o corpus sintético
 	uv run python scripts/make_fixtures.py

@@ -127,4 +127,4 @@ def test_no_cursor_execute_outside_tenant_or_system_tx() -> None:
             offenders.append(path.name)
     assert offenders == []
     db_text = (source / "db.py").read_text(encoding="utf-8")
-    assert db_text.count("self._pool.connection()") == 3  # tenant_tx, user_tx e system_tx
+    assert db_text.count("self._pool.connection()") == 4  # tenant_tx, user_tx, ping e system_tx
