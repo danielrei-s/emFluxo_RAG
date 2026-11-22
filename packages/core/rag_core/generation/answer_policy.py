@@ -47,6 +47,37 @@ def _citations(text: str, bundle: PromptBundle) -> tuple[Citation, ...]:
     )
 
 
+def answer_from_text(
+    text: str, model: str | None, bundle: PromptBundle, policy: TenantPolicy, sentinel: str
+) -> Answer | None:
+    """``Answer`` se o texto passa na validação (INV-07); senão ``None``."""
+    excerpts = {i: chunk.text for i, chunk in bundle.numbered}
+    validation = validate(text, len(bundle.numbered), policy, sentinel, excerpts)
+    if not validation.ok:
+        return None
+    citations = _citations(text, bundle) if validation.kind == "grounded" else ()
+    return Answer(
+        kind=validation.kind,
+        text=text.strip(),
+        citations=citations,
+        used_chunk_ids=tuple(c.chunk_id for c in citations),
+        warnings=validation.warnings,
+        model=model,
+    )
+
+
+def not_found_fallback() -> Answer:
+    """Resposta quando a validação falha (sem nova tentativa)."""
+    return Answer(kind="not_found", text=NOT_FOUND, warnings=(CITATION_FAILED,))
+
+
+def _failure_reasons(
+    text: str, bundle: PromptBundle, policy: TenantPolicy, sentinel: str
+) -> Validation:
+    excerpts = {i: chunk.text for i, chunk in bundle.numbered}
+    return validate(text, len(bundle.numbered), policy, sentinel, excerpts)
+
+
 def finalize(
     llm: LLMProvider,
     bundle: PromptBundle,
@@ -55,21 +86,13 @@ def finalize(
     sentinel: str,
 ) -> Answer:
     """Gera e valida (INV-07); repete uma vez com a regra violada; senão "não encontrei"."""
-    excerpts = {i: chunk.text for i, chunk in bundle.numbered}
     messages = list(bundle.messages)
     for attempt in range(2):
         result = llm.generate(messages, params=params)
-        validation = validate(result.text, len(bundle.numbered), policy, sentinel, excerpts)
-        if validation.ok:
-            citations = _citations(result.text, bundle) if validation.kind == "grounded" else ()
-            return Answer(
-                kind=validation.kind,
-                text=result.text.strip(),
-                citations=citations,
-                used_chunk_ids=tuple(c.chunk_id for c in citations),
-                warnings=validation.warnings,
-                model=result.model,
-            )
+        answer = answer_from_text(result.text, result.model, bundle, policy, sentinel)
+        if answer is not None:
+            return answer
         if attempt == 0:
-            messages = [*bundle.messages, _correction(validation)]
-    return Answer(kind="not_found", text=NOT_FOUND, warnings=(CITATION_FAILED,))
+            failure = _failure_reasons(result.text, bundle, policy, sentinel)
+            messages = [*bundle.messages, _correction(failure)]
+    return not_found_fallback()
