@@ -102,7 +102,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F7-T04 | Documentos, chunks e `PgVectorStore` | ⬜ | | |
 | F7-T05 | Verificação de identidade e resolução do Principal | ✅ | 2026-11-22 | rag_central.auth (PrincipalResolver com cache 60 s, get_principal, require_product, require_action com aal2), Database.user_tx, runbook supabase-setup.md; 11 testes de integração; HR-09 não bloqueante |
 | F7-T06 | Auditoria append-only com cadeia de hashes | ✅ | 2026-11-22 | 0004_audit.sql (triggers append-only, RLS, heads), rag_central.audit (AuditLogger, verify_chain, allowlist de metadados); runner aceita lacunas na numeração (0003 espera a ADR-0009); 8 testes de integração |
-| F7-T07 | Fila de jobs em Postgres e worker | ⬜ | | |
+| F7-T07 | Fila de jobs em Postgres e worker | ✅ | 2026-11-22 | 0005_jobs.sql, rag_central.jobs (enqueue com dedupe, claim SKIP LOCKED, backoff, dead, lease), Worker; 9 testes de integração. Gate da F7 só falta F7-T04 (ADR-0009) |
 
 ## F8 — Central API
 
