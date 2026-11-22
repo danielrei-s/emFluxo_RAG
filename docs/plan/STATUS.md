@@ -73,7 +73,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
-| F5-T01 | Store SQLite (CLI e base do motor local) | ⬜ | | |
+| F5-T01 | Store SQLite (CLI e base do motor local) | ✅ | 2026-11-22 | stores/{sqlite_store,keyword_index}; suite de contrato com FTS5 e com fallback BM25; cache de matriz invalidada também por outras ligações (data_version); ruff: S608 ignorado só em stores/*.py; 100% de cobertura |
 | F5-T02 | Adaptadores de modelos reais e registo de modelos | ⬜ | | |
 | F5-T03 | CLI `rag` | ⬜ | | |
 | F5-T04 | Harness de avaliação | ⬜ | | |
