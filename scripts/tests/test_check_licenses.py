@@ -111,12 +111,9 @@ def test_policy_file_is_well_formed(policy: dict[str, Any]) -> None:
 
 def test_exceptions_require_reason_and_adr(tmp_path: Path) -> None:
     bad = tmp_path / "policy.yaml"
-    bad.write_text(
-        (ROOT / "scripts" / "license_policy.yaml")
-        .read_text(encoding="utf-8")
-        .replace("exceptions: []", "exceptions:\n  - package: foo\n"),
-        encoding="utf-8",
-    )
+    original = (ROOT / "scripts" / "license_policy.yaml").read_text(encoding="utf-8")
+    head = original[: original.index("exceptions:")]
+    bad.write_text(head + "exceptions:\n  - package: foo\n", encoding="utf-8")
     with pytest.raises(ValueError, match="reason"):
         cl.load_policy(bad)
 

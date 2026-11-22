@@ -93,4 +93,10 @@ normalize:
   "gnu affero general public license v3 or later (agplv3+)": AGPL-3.0-or-later
 
 # Exceções documentadas: package ("nome" ou "nome==versão"), reason e adr são obrigatórios.
-exceptions: []
+exceptions:
+  - package: pypdfium2
+    reason: >-
+      Licença declarada "BSD-3-Clause OR Apache-2.0" mais o aviso "dependency licenses" das
+      bibliotecas do pdfium embutidas (todas permissivas). Usado só pelo parser PDF lite
+      (índice/bookmarks). Rever a lista completa ao preencher o perfil shipped (F11-T12).
+    adr: "0006"

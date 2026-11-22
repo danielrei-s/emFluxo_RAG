@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-lite = ["olefile", "beautifulsoup4", "python-docx", "openpyxl", "python-pptx"]
+lite = ["olefile", "beautifulsoup4", "python-docx", "openpyxl", "python-pptx", "pdfplumber", "pypdfium2"]
 ocr = []
 docling = []
 onnx = []
@@ -33,6 +33,10 @@ dev = [
     "python-docx",
     "openpyxl",
     "python-pptx",
+    "pdfplumber",
+    "pypdfium2",
+    "reportlab",
+    "pypdf",
     "mypy",
     "ruff",
 ]

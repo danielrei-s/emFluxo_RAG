@@ -47,7 +47,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F3-T03 | Base dos parsers, registo e formatos de texto (TXT, MD, CSV, HTML) | ✅ | 2026-11-22 | parsing/{base,registry,text,html}; beautifulsoup4 no extra lite; cobertura 100% |
 | F3-T04 | Parser DOCX (lite) | ✅ | 2026-11-22 | parsing/docx_lite; python-docx no extra lite; HIDDEN_FLAG movido para parsing.base |
 | F3-T05 | Parsers XLSX e PPTX (lite) | ✅ | 2026-11-22 | parsing/xlsx_lite e pptx_lite; openpyxl + python-pptx no extra lite; aviso formula_without_cached_value via 2.ª leitura sem data_only |
-| F3-T06 | Parser PDF (lite) | ⬜ | | |
+| F3-T06 | Parser PDF (lite) | ✅ | 2026-11-22 | parsing/pdf_lite + hidden_text_spans; pdfplumber + pypdfium2 no extra lite; exceção de licença pypdfium2 (ADR 0006) |
 | F3-T07 | Parser de email (EML) | ⬜ | | |
 | F3-T08 | OCR opcional (extra `ocr`) | ⬜ | | |
 | F3-T09 | Adaptador Docling (perfil full, central) | ⬜ | | |
