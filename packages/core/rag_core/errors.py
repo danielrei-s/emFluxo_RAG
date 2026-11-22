@@ -75,3 +75,9 @@ class UpstreamError(RagError):
 
 class ConsentError(RagError):
     code = "consent_error"
+
+
+class Unauthenticated(RagError):
+    """Token ausente, inválido ou expirado (HTTP 401). O ``detail_id`` é só um código curto."""
+
+    code = "unauthenticated"

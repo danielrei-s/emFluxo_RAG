@@ -22,6 +22,7 @@ docling = ["docling==2.151.1"]
 onnx = ["fastembed", "tokenizers"]
 st = ["sentence-transformers"]
 web = ["fastapi"]
+auth = ["pyjwt[crypto]"]
 
 [dependency-groups]
 dev = [
@@ -35,6 +36,7 @@ dev = [
     "python-stdnum",
     "tokenizers",
     "fastapi",
+    "pyjwt[crypto]",
     "beautifulsoup4",
     "python-docx",
     "openpyxl",

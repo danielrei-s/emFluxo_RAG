@@ -24,6 +24,7 @@ STATUS_BY_CODE: dict[str, int] = {
     errors.CorruptedFile.code: 422,
     errors.ParseTimeout.code: 422,
     errors.ParseMemoryLimit.code: 422,
+    errors.Unauthenticated.code: 401,
     errors.AccessDenied.code: 403,
     errors.ConsentError.code: 403,
     errors.NotFound.code: 404,
@@ -33,6 +34,7 @@ STATUS_BY_CODE: dict[str, int] = {
 }
 _TITLES = {
     400: "Pedido inválido",
+    401: "Não autenticado",
     403: "Acesso negado",
     404: "Não encontrado",
     405: "Método não permitido",
@@ -71,7 +73,8 @@ def _rag_error(_: Request, exc: Exception) -> JSONResponse:
     error = cast(errors.RagError, exc)
     status = STATUS_BY_CODE.get(error.code, 500)
     subcode = error.subcode if isinstance(error, errors.ValidationFailed) else None
-    return problem_response(status, error.code, subcode=subcode)
+    headers = {"WWW-Authenticate": "Bearer"} if status == 401 else None
+    return problem_response(status, error.code, subcode=subcode, headers=headers)
 
 
 def _http_error(_: Request, exc: Exception) -> JSONResponse:

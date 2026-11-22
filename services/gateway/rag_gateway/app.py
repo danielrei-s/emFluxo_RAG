@@ -10,6 +10,7 @@ from fastapi.responses import JSONResponse
 from rag_core.config import Settings
 
 from rag_gateway import __version__
+from rag_gateway.auth import Authenticator
 from rag_gateway.middleware import install_middleware
 
 
@@ -18,6 +19,7 @@ class GatewayDeps:
     """Dependências injetadas (``/readyz`` verifica cada uma; os testes passam as suas)."""
 
     readiness: Mapping[str, Callable[[], bool]] = field(default_factory=dict)
+    authenticator: Authenticator | None = None
 
 
 def create_app(settings: Settings, deps: GatewayDeps | None = None) -> FastAPI:
