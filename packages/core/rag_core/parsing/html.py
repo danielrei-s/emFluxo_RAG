@@ -117,6 +117,22 @@ class _Walker:
                 self.emit(Block(kind="paragraph", text=text))
 
 
+def strip_hidden_html(data: bytes) -> tuple[bytes, bool]:
+    """Remove scripts e elementos ocultos do HTML. Devolve ``(bytes, havia_oculto)``."""
+    soup = BeautifulSoup(data, "html.parser")
+    hidden = changed = False
+    for tag in soup.find_all(True):
+        if tag.decomposed:
+            continue
+        if tag.name in _DROPPED - {"head"}:
+            tag.decompose()
+            changed = True
+        elif _is_hidden(tag):
+            tag.decompose()
+            hidden = changed = True
+    return (str(soup).encode("utf-8") if changed else data), hidden
+
+
 class HtmlParser:
     """HTML com ``html.parser``: headings, parágrafos, listas e tabelas do texto visível."""
 

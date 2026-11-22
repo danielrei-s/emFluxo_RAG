@@ -46,3 +46,6 @@ target/
 Thumbs.db
 .idea/
 .vscode/
+
+# Modelos do Docling pré-descarregados (F3-T09)
+.docling-artifacts/

@@ -16,7 +16,7 @@ dependencies = [
 [project.optional-dependencies]
 lite = ["olefile", "beautifulsoup4", "python-docx", "openpyxl", "python-pptx", "pdfplumber", "pypdfium2"]
 ocr = ["rapidocr-onnxruntime", "pillow"]
-docling = []
+docling = ["docling==2.151.1"]
 onnx = []
 st = []
 

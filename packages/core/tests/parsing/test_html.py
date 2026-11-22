@@ -93,3 +93,17 @@ def test_nested_hidden_and_dropped_inside_blocks() -> None:
     doc = _parse("<body><p>a <span hidden>X</span><script>s()</script> b</p><p></p><p>c</p></body>")
     assert [b.text for b in doc.blocks] == ["a b", "c"]
     assert doc.blocks[0].flags == {"hidden_text_removed"}
+
+
+def test_strip_hidden_html_handles_nested_hidden_and_reports_it() -> None:
+    from rag_core.parsing.html import strip_hidden_html
+
+    data, hidden = strip_hidden_html(
+        b"<div hidden><p hidden>x</p><script>s()</script></div><script>y()</script><p>ok</p>"
+    )
+    assert hidden is True
+    assert data == b"<p>ok</p>"
+    only_script, hidden2 = strip_hidden_html(b"<p>a</p><script>s()</script>")
+    assert (only_script, hidden2) == (b"<p>a</p>", False)
+    same = b"<p>limpo</p>"
+    assert strip_hidden_html(same) == (same, False)

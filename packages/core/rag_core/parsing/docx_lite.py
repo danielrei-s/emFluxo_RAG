@@ -64,6 +64,25 @@ def _has_numbering(paragraph: Paragraph) -> bool:
     return style is not None and bool(style.element.xpath("./w:pPr/w:numPr"))
 
 
+def strip_hidden_runs(data: bytes) -> tuple[bytes, bool]:
+    """Remove do DOCX os runs ocultos (para parsers de terceiros). Devolve ``(bytes, mudou)``."""
+    try:
+        document = Document(io.BytesIO(data))
+        removed = False
+        for element in list(document.element.body.xpath(".//w:r")):
+            run = Run(element, document)
+            if _is_hidden_run(run) and run.text.strip():
+                element.getparent().remove(element)
+                removed = True
+        if not removed:
+            return data, False
+        buffer = io.BytesIO()
+        document.save(buffer)
+        return buffer.getvalue(), True
+    except Exception as exc:  # python-docx levanta tipos variados em ficheiros corrompidos
+        raise CorruptedFile("docx_unreadable") from exc
+
+
 class _Collector:
     def __init__(self) -> None:
         self.blocks: list[Block] = []
