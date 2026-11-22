@@ -52,6 +52,15 @@ class Database:
             yield cur
 
     @contextmanager
+    def user_tx(self, user_id: str) -> Iterator[Cursor[DictRow]]:
+        """Só ``app.user_id``: o utilizador vê as suas pertenças antes de escolher o tenant."""
+        if not _UUID.fullmatch(user_id):
+            raise ValidationFailed(subcode="invalid_tenant_context")
+        with self._pool.connection() as conn, conn.transaction(), conn.cursor() as cur:
+            cur.execute("select set_config('app.user_id', %s, true)", (user_id,))
+            yield cur
+
+    @contextmanager
     def system_tx(self, reason: str) -> Iterator[Cursor[DictRow]]:
         """Sem contexto de tenant: só para claim de jobs, migrações e manutenção."""
         if not self._allow_system:

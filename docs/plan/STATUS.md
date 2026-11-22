@@ -100,7 +100,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F7-T02 | Esquema de tenancy com RLS forçado | ✅ | 2026-11-22 | 0002_tenancy.sql (8 tabelas com RLS forçado, platform_staff sem grants, privilégios por coluna, back-office só leitura); testes de isolamento paramétricos e de catálogo (corre em todas as migrações); corrigido o noinherit dos logins (F7-T01) |
 | F7-T03 | Camada de acesso à BD com contexto de tenant | ✅ | 2026-11-22 | rag_central.db (Database, tenant_tx, system_tx só para o worker, pool sem prepared statements); 7 testes de integração; pacote renomeado rag_central; mypy passa a cobrir a central |
 | F7-T04 | Documentos, chunks e `PgVectorStore` | ⬜ | | |
-| F7-T05 | Verificação de identidade e resolução do Principal | ⬜ | | |
+| F7-T05 | Verificação de identidade e resolução do Principal | ✅ | 2026-11-22 | rag_central.auth (PrincipalResolver com cache 60 s, get_principal, require_product, require_action com aal2), Database.user_tx, runbook supabase-setup.md; 11 testes de integração; HR-09 não bloqueante |
 | F7-T06 | Auditoria append-only com cadeia de hashes | ⬜ | | |
 | F7-T07 | Fila de jobs em Postgres e worker | ⬜ | | |
 

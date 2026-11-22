@@ -4,7 +4,8 @@ version = "0.0.0"
 description = "Central API: BD central, tenancy, documentos e pesquisa federada (F7-F8)"
 requires-python = ">=3.12"
 dependencies = [
-    "rag-core",
+    "rag-core[web,auth]",
+    "fastapi",
     "psycopg[binary]",
     "psycopg-pool",
     "pgvector",

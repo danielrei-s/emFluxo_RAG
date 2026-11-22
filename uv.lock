@@ -3181,18 +3181,20 @@ name = "rag-central-api"
 version = "0.0.0"
 source = { editable = "services/central-api" }
 dependencies = [
+    { name = "fastapi" },
     { name = "pgvector" },
     { name = "psycopg", extra = ["binary"] },
     { name = "psycopg-pool" },
-    { name = "rag-core" },
+    { name = "rag-core", extra = ["auth", "web"] },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "fastapi" },
     { name = "pgvector" },
     { name = "psycopg", extras = ["binary"] },
     { name = "psycopg-pool" },
-    { name = "rag-core", editable = "packages/core" },
+    { name = "rag-core", extras = ["web", "auth"], editable = "packages/core" },
 ]
 
 [[package]]
