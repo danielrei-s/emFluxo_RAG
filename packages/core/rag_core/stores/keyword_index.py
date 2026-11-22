@@ -26,8 +26,6 @@ class KeywordIndex(Protocol):
 class Fts5KeywordIndex:
     """FTS5 com ``unicode61 remove_diacritics 2``; pergunta = tokens entre aspas unidos por OR."""
 
-    TABLE = "chunks_fts"
-
     def __init__(self, conn: sqlite3.Connection) -> None:
         self._conn = conn
 
@@ -35,7 +33,7 @@ class Fts5KeywordIndex:
     def create(cls, conn: sqlite3.Connection) -> Fts5KeywordIndex:
         """Cria a tabela virtual; levanta ``sqlite3.OperationalError`` se não houver FTS5."""
         conn.execute(
-            f"CREATE VIRTUAL TABLE IF NOT EXISTS {cls.TABLE} USING fts5("
+            "CREATE VIRTUAL TABLE IF NOT EXISTS chunks_fts USING fts5("
             "chunk_id UNINDEXED, tenant_id UNINDEXED, text, "
             "tokenize='unicode61 remove_diacritics 2')"
         )
@@ -43,13 +41,13 @@ class Fts5KeywordIndex:
 
     def add(self, chunk_id: str, tenant_id: str, text: str) -> None:
         self._conn.execute(
-            f"INSERT INTO {self.TABLE}(chunk_id, tenant_id, text) VALUES (?, ?, ?)",
+            "INSERT INTO chunks_fts(chunk_id, tenant_id, text) VALUES (?, ?, ?)",
             (chunk_id, tenant_id, text),
         )
 
     def remove(self, chunk_ids: Sequence[str]) -> None:
         self._conn.executemany(
-            f"DELETE FROM {self.TABLE} WHERE chunk_id = ?", [(cid,) for cid in chunk_ids]
+            "DELETE FROM chunks_fts WHERE chunk_id = ?", [(cid,) for cid in chunk_ids]
         )
 
     def search(self, query: str, tenant_id: str, limit: int) -> list[tuple[str, float]]:
@@ -58,8 +56,8 @@ class Fts5KeywordIndex:
             return []
         match = " OR ".join(f'"{token}"' for token in dict.fromkeys(tokens))
         rows = self._conn.execute(
-            f"SELECT chunk_id, bm25({self.TABLE}) AS rank FROM {self.TABLE} "
-            f"WHERE {self.TABLE} MATCH ? AND tenant_id = ? ORDER BY rank, chunk_id LIMIT ?",
+            "SELECT chunk_id, bm25(chunks_fts) AS rank FROM chunks_fts "
+            "WHERE chunks_fts MATCH ? AND tenant_id = ? ORDER BY rank, chunk_id LIMIT ?",
             (match, tenant_id, limit),
         ).fetchall()
         return [(str(chunk_id), -float(rank)) for chunk_id, rank in rows]  # bm25() é negativo

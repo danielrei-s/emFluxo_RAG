@@ -32,6 +32,8 @@ BLOCKED_EVENTS = frozenset(
         "os.exec",
         "os.posix_spawn",
         "os.spawn",
+        "os.fork",  # em POSIX, os.spawn* e subprocess criam o filho com fork + exec
+        "os.forkpty",
     }
 )
 MAX_OPEN_FILES = 256

@@ -118,14 +118,20 @@ class SqliteVectorStore:
 
     _CHUNK_COLUMNS = "chunk_id, ordinal, text, meta_json, embedding, embedding_model"
 
+    def _select_in(self, columns: str, batch: Sequence[str]) -> list[tuple[Any, ...]]:
+        """``SELECT`` por ``chunk_id IN (...)``; ``columns`` é sempre uma constante."""
+        marks = ",".join("?" * len(batch))
+        # Só nomes de colunas constantes e marcadores "?"; os valores vão como parâmetros.
+        # nosemgrep: python.sqlalchemy.security.sqlalchemy-execute-raw-query.sqlalchemy-execute-raw-query  # noqa: E501
+        cursor = self._conn.execute(
+            f"SELECT {columns} FROM chunks WHERE chunk_id IN ({marks})", list(batch)
+        )
+        return [tuple(row) for row in cursor.fetchall()]
+
     def _fetch(self, chunk_ids: Sequence[str]) -> dict[str, Chunk]:
         found: dict[str, Chunk] = {}
         for batch in _batches(list(chunk_ids)):
-            marks = ",".join("?" * len(batch))
-            rows = self._conn.execute(
-                f"SELECT {self._CHUNK_COLUMNS} FROM chunks WHERE chunk_id IN ({marks})", batch
-            ).fetchall()
-            for row in rows:
+            for row in self._select_in(self._CHUNK_COLUMNS, batch):
                 chunk = self._row_to_chunk(row)
                 found[chunk.chunk_id] = chunk
         return found
@@ -218,12 +224,7 @@ class SqliteVectorStore:
         """Do topo da lista, os primeiros ``k`` que o filtro pode ler (metadados em lotes)."""
         readable: list[str] = []
         for batch in _batches(list(ranked_ids)):
-            marks = ",".join("?" * len(batch))
-            rows = dict(
-                self._conn.execute(
-                    f"SELECT chunk_id, meta_json FROM chunks WHERE chunk_id IN ({marks})", batch
-                ).fetchall()
-            )
+            rows = dict(self._select_in("chunk_id, meta_json", batch))
             for chunk_id in batch:
                 meta_json = rows.get(chunk_id)
                 if meta_json is not None and can_read(
