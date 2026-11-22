@@ -44,3 +44,17 @@ class FakePrincipalResolver:
 
     def resolve(self, claims: Mapping[str, Any], device_id: str) -> Principal | None:
         return self._principals.get(str(claims.get("sub")))
+
+
+class NoDevices:
+    """Sem Central API (F8-T06) nenhum dispositivo é aceite: só entram tokens de serviço."""
+
+    def is_active(self, tenant_id: str, user_id: str, device_id: str) -> bool:
+        return False
+
+
+class NoPrincipals:
+    """Idem para a resolução de utilizadores Supabase."""
+
+    def resolve(self, claims: Mapping[str, Any], device_id: str) -> Principal | None:
+        return None

@@ -125,6 +125,7 @@ class Settings(BaseSettings):
     gateway_url: str | None = None
 
     models_file: Path | None = None
+    gateway_policies_file: Path | None = None  # políticas por tenant do gateway (YAML)
 
     blob_backend: Literal["fs", "supabase", "s3"] = "fs"
     blob_fs_root: Path | None = None

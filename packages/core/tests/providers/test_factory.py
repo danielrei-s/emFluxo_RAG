@@ -8,7 +8,7 @@ import pytest
 from rag_core.config import Settings
 from rag_core.errors import ValidationFailed
 from rag_core.providers import OpenAICompatibleEmbedder, OpenAICompatibleLLM
-from rag_core.providers.factory import build_models
+from rag_core.providers.factory import build_llm_providers, build_models
 from rag_core.retrieval import NoopReranker
 
 EXAMPLE = Path(__file__).resolve().parents[4] / "models.example.yaml"
@@ -97,3 +97,18 @@ def test_aliases_fastembed_embedder_and_reranker(
         with pytest.raises(ValidationFailed) as exc:
             build_models(settings, registry, **{"llm_alias": "llm-a", **kwargs})
         assert exc.value.subcode == "unsupported_backend"
+
+
+def test_build_llm_providers_creates_one_per_llm_alias(tmp_path: Path) -> None:
+    settings = Settings.for_tests(ollama_url="http://127.0.0.1:11434/v1")
+    providers = build_llm_providers(settings, EXAMPLE)
+    assert "rag-default" in providers and "rag-embed" not in providers  # só kind: llm
+    assert all(isinstance(p, OpenAICompatibleLLM) for p in providers.values())
+    with pytest.raises(ValidationFailed) as missing:
+        build_llm_providers(settings, tmp_path / "nao-existe.yaml")
+    assert missing.value.subcode == "models_file_missing"
+    odd = tmp_path / "odd.yaml"
+    odd.write_text("models:\n  x: {kind: llm, backend: outro, model: m, license: MIT}\n", "utf-8")
+    with pytest.raises(ValidationFailed) as backend:
+        build_llm_providers(settings, odd)
+    assert backend.value.subcode == "unsupported_backend"

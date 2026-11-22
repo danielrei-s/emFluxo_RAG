@@ -90,3 +90,24 @@ def build_models(
     retrieval = settings.retrieval.model_copy(update={"rerank_enabled": False})
     tuned = settings.model_copy(update={"retrieval": retrieval})
     return Models(embedder, llm, NoopReranker(), tuned)
+
+
+def build_llm_providers(
+    settings: Settings, models_file: Path | None = None
+) -> dict[str, LLMProvider]:
+    """Um fornecedor por alias ``kind: llm`` do ``models.yaml`` (usado pelo gateway)."""
+    path = models_file or settings.models_file or DEFAULT_MODELS_FILE
+    if not path.is_file():
+        raise ValidationFailed(subcode="models_file_missing")
+    registry = ModelRegistry.from_file(path)
+    providers: dict[str, LLMProvider] = {}
+    for alias in registry.aliases:
+        spec = registry.get(alias)
+        if spec.kind != "llm":
+            continue
+        if spec.backend != "openai_compat":
+            raise ValidationFailed(subcode="unsupported_backend")
+        providers[alias] = OpenAICompatibleLLM(
+            alias, _base_url(spec, settings), spec.model, is_remote=spec.external
+        )
+    return providers

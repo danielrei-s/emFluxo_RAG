@@ -1,0 +1,85 @@
+# Máquina 1 (MVP): gateway + Ollama, expostos só pelo Cloudflare Tunnel (F6-T07).
+#
+#   docker compose -f infra/compose/docker-compose.prod.yml up -d --build
+#
+# Segredos e configuração fora do repositório (INV-13), em /etc/rag/ (modo 0600, dono root):
+#   gateway.env      RAG_ENV=staging, RAG_CENTRAL_ISSUER, RAG_CENTRAL_JWKS_URL, ...
+#   cloudflared.env  o token do tunnel (variável TUNNEL_TOKEN)
+#   models.yaml      registo de modelos (ADR-0009)
+#   policies.yaml    políticas por tenant do gateway
+#
+# Redes: `edge` (cloudflared <-> gateway) e `models` (gateway <-> ollama, sem acesso externo).
+# O ollama não publica portas e só está na rede `models` (INV-24).
+name: rag-prod
+
+x-hardened: &hardened
+  restart: unless-stopped
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+
+services:
+  gateway:
+    <<: *hardened
+    image: rag-gateway:0.1.0 # construída localmente a partir de services/gateway/Dockerfile
+    build:
+      context: ../..
+      dockerfile: services/gateway/Dockerfile
+    user: "10001:10001"
+    env_file: /etc/rag/gateway.env
+    environment:
+      RAG_OLLAMA_URL: http://ollama:11434/v1
+      RAG_MODELS_FILE: /etc/rag/models.yaml
+      RAG_GATEWAY_POLICIES_FILE: /etc/rag/policies.yaml
+    volumes:
+      - /etc/rag/models.yaml:/etc/rag/models.yaml:ro
+      - /etc/rag/policies.yaml:/etc/rag/policies.yaml:ro
+    tmpfs:
+      - /tmp
+    networks: [edge, models]
+    depends_on:
+      ollama:
+        condition: service_healthy
+
+  ollama:
+    <<: *hardened
+    image: ollama/ollama:0.40.17
+    # A imagem oficial corre como root (escreve em /root/.ollama); fica sem capabilities,
+    # sem novos privilégios, com raiz só de leitura e sem acesso à rede externa.
+    volumes:
+      - ollama-models:/root/.ollama
+    tmpfs:
+      - /tmp
+    networks: [models]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  cloudflared:
+    <<: *hardened
+    image: cloudflare/cloudflared:2026.3.0
+    user: "65532:65532"
+    command: ["tunnel", "--no-autoupdate", "run"]
+    env_file: /etc/rag/cloudflared.env
+    networks: [edge]
+    depends_on:
+      gateway:
+        condition: service_healthy
+
+networks:
+  edge: {}
+  models:
+    internal: true
+
+volumes:
+  ollama-models: {}
