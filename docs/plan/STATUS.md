@@ -86,7 +86,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F6-T01 | Esqueleto do serviço | ✅ | 2026-11-22 | rag_core/web (request_id, security_headers, body_limit, problem + install_standard_web); services/gateway (create_app, /healthz, /readyz, openapi.json snapshot, Dockerfile validado: build, uid 10001, read-only); extra web; make openapi gera o do gateway |
 | F6-T02 | Autenticação por JWT (JWKS) | ✅ | 2026-11-22 | rag_core/auth (JwksVerifier, CompositeVerifier, claims de serviço) e testing/jwt; gateway: auth.py (Authenticator, require_auth), ports.py com fakes; novo erro Unauthenticated (401 + WWW-Authenticate); extra auth (pyjwt[crypto]); CI da F3-T10 corrigido (os.fork no sandbox, semgrep) e verde |
 | F6-T03 | Políticas por tenant, quotas e rate limit | ✅ | 2026-11-22 | policy_provider (StaticPolicyProvider); gateway: limits (token bucket, janela Redis, GatewayLimiter, Retry-After), usage; o problem+json passa a expor detail_id seguro como subcode; Redis só por duck typing (sem dependência) |
-| F6-T04 | Escolha de modelo, timeouts e fallback | ⬜ | | |
+| F6-T04 | Escolha de modelo, timeouts e fallback | ✅ | 2026-11-22 | ModelRouter + disjuntor |
 | F6-T05 | Endpoint `/v1/chat/completions` (subconjunto compatível com OpenAI) | ⬜ | | |
 | F6-T06 | Redação no gateway para fornecedores externos | ⬜ | | |
 | F6-T07 | Deploy do gateway na Máquina 1 (staging) | ⬜ | | |
