@@ -72,6 +72,8 @@ class ModelRegistry:
     @classmethod
     def from_file(cls, path: Path) -> ModelRegistry:
         data: dict[str, Any] = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        if not isinstance(data.get("models"), dict):
+            raise ValidationFailed(subcode="models_section_missing")
         specs = {alias: ModelSpec.model_validate(spec) for alias, spec in data["models"].items()}
         return cls(specs)
 

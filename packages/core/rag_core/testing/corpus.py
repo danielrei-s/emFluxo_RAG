@@ -2,17 +2,16 @@
 
 from __future__ import annotations
 
-import uuid
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 import yaml
 
-from rag_core.types import Acl, Classification, Principal, Role, SourceFile
+from rag_core.manifest import CorpusManifest, stable_id
+from rag_core.types import Acl, Principal, SourceFile
 
 CORPUS_DIR = Path(__file__).resolve().parents[4] / "fixtures" / "corpus"
-_NAMESPACE = uuid.UUID("5d0c1f6e-0a54-4b4e-9f0d-3a2f6a7c1e11")
 
 
 @lru_cache(maxsize=1)
@@ -22,33 +21,27 @@ def load_manifest() -> dict[str, Any]:
     return manifest
 
 
+def _manifest() -> CorpusManifest:
+    return CorpusManifest(load_manifest())
+
+
 def _stable_id(*parts: str) -> str:
-    return str(uuid.uuid5(_NAMESPACE, "/".join(parts)))
+    return stable_id(*parts)
 
 
 def tenant_id(slug: str) -> str:
     """ID estável do tenant a partir do slug (``aurora``, ``boreal``)."""
-    if slug not in load_manifest()["tenants"]:
-        raise KeyError(slug)
-    return _stable_id("tenant", slug)
+    return _manifest().tenant_id(slug)
 
 
 def doc_uuid(manifest_id: str) -> str:
     """ID central estável (UUID) de um documento do manifest (ex.: ``A01``)."""
-    return _stable_id("doc", manifest_id)
+    return _manifest().doc_uuid(manifest_id)
 
 
 def principal_for(tenant: str, user: str) -> Principal:
     """``Principal`` de um utilizador do manifest (role e grupos incluídos)."""
-    for entry in load_manifest()["tenants"][tenant]["users"]:
-        if entry["id"] == user:
-            return Principal(
-                tenant_id=tenant_id(tenant),
-                user_id=_stable_id("user", tenant, user),
-                role=Role(entry["role"]),
-                groups=frozenset(entry["groups"]),
-            )
-    raise KeyError(f"{tenant}/{user}")
+    return _manifest().principal_for(tenant, user)
 
 
 def _entry(manifest_id: str) -> dict[str, Any]:
@@ -61,23 +54,7 @@ def _entry(manifest_id: str) -> dict[str, Any]:
 
 def source_file_for(manifest_id: str) -> SourceFile:
     """``SourceFile`` central de um documento, com a ACL e classificação do manifest."""
-    doc = _entry(manifest_id)
-    acl = doc["acl"]
-    doc_id = doc_uuid(manifest_id)
-    filename = Path(doc["file"]).name
-    return SourceFile(
-        tenant_id=tenant_id(doc["tenant"]),
-        workspace_id=_stable_id("workspace", doc["tenant"]),
-        doc_id=doc_id,
-        source_uri=f"upload://{doc_id}/{filename}",
-        filename=filename,
-        acl=Acl(
-            all_members=acl["all_members"],
-            users=frozenset(acl["users"]),
-            groups=frozenset(acl["groups"]),
-        ),
-        classification=Classification(doc["classification"]),
-    )
+    return _manifest().source_for_id(manifest_id)
 
 
 def read_bytes(manifest_id: str) -> bytes:
