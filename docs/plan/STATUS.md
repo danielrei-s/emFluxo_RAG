@@ -43,7 +43,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
 | F3-T01 | Deteção de tipo e validação de ficheiros | ✅ | 2026-11-22 | sniff/detect_type/validate_file; extra lite = olefile; OLE2 mínimo construído nos testes |
-| F3-T02 | Sanitização de texto e deteção de prompt injection | ⬜ | | |
+| F3-T02 | Sanitização de texto e deteção de prompt injection | ✅ | 2026-11-22 | clean_text (Cc/Cf/Co/tags, NFC) e 9 regras de injection PT/EN; sem dependências novas |
 | F3-T03 | Base dos parsers, registo e formatos de texto (TXT, MD, CSV, HTML) | ⬜ | | |
 | F3-T04 | Parser DOCX (lite) | ⬜ | | |
 | F3-T05 | Parsers XLSX e PPTX (lite) | ⬜ | | |
