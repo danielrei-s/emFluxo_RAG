@@ -7,7 +7,10 @@ from dataclasses import dataclass, field
 
 from rag_core.errors import AccessDenied, UpstreamError
 from rag_core.interfaces import Clock, LLMProvider, TenantPolicy
+from rag_core.pii import Redactor
 from rag_core.types import ChatMessage, GenerationParams, LLMResult
+
+from rag_gateway.redaction import protect
 
 FAILURE_THRESHOLD = 3
 OPEN_SECONDS = 30.0
@@ -87,9 +90,10 @@ class ModelRouter:
         params: GenerationParams,
     ) -> RoutedResult:
         failed: list[str] = []
+        redactor = Redactor() if policy.redact_pii_for_external else None
         for alias, provider, skipped in self._candidates(self.order(requested, policy)):
             try:
-                result = provider.generate(messages, params=params)
+                result = protect(provider, redactor).generate(messages, params=params)
             except UpstreamError:
                 self._breakers[alias].record_failure()
                 failed.append(alias)
@@ -106,8 +110,9 @@ class ModelRouter:
         params: GenerationParams,
     ) -> Iterator[tuple[str, str]]:
         """Pares ``(alias, pedaço)``. Só há fallback antes do primeiro pedaço de texto."""
+        redactor = Redactor() if policy.redact_pii_for_external else None
         for alias, provider, _ in self._candidates(self.order(requested, policy)):
-            tokens = provider.stream(messages, params=params)
+            tokens = protect(provider, redactor).stream(messages, params=params)
             try:
                 first = next(tokens, None)
             except UpstreamError:
