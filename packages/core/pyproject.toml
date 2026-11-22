@@ -10,6 +10,7 @@ dependencies = [
     "httpx",
     "numpy",
     "rank-bm25",
+    "pyyaml",
 ]
 
 [project.optional-dependencies]

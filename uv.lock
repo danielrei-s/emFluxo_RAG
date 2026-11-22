@@ -1418,6 +1418,7 @@ dependencies = [
     { name = "numpy" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
+    { name = "pyyaml" },
     { name = "rank-bm25" },
     { name = "structlog" },
 ]
@@ -1439,6 +1440,7 @@ requires-dist = [
     { name = "numpy" },
     { name = "pydantic", specifier = ">=2.10" },
     { name = "pydantic-settings" },
+    { name = "pyyaml" },
     { name = "rank-bm25" },
     { name = "structlog" },
 ]

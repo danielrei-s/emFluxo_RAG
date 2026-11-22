@@ -1,0 +1,73 @@
+# Golden set v0 (F2-T02). Perguntas em PT-PT; HR-03: revisão do OLEK (não bloqueante).
+- id: B-Q001
+  tenant: boreal
+  user: bruno
+  question: Quantos dias de férias tenho por ano?
+  category: answerable_single
+  expected_doc_ids:
+    - B01
+  expected_answer_contains:
+    - "22"
+  must_not_contain:
+    - "25"
+    - CANARIO-RH
+- id: B-Q002
+  tenant: boreal
+  user: bruno
+  question: Qual é o nosso horário de trabalho?
+  category: answerable_single
+  expected_doc_ids:
+    - B01
+  expected_answer_contains:
+    - 8h30
+    - 17h30
+  must_not_contain:
+    - CANARIO
+- id: B-Q003
+  tenant: boreal
+  user: bruno
+  question: Quanto custa a hora de consultoria sénior?
+  category: answerable_table
+  expected_doc_ids:
+    - B02
+  expected_answer_contains:
+    - "95"
+  must_not_contain:
+    - CANARIO
+- id: B-Q004
+  tenant: boreal
+  user: bruno
+  question: E a de consultoria júnior?
+  category: answerable_table
+  expected_doc_ids:
+    - B02
+  expected_answer_contains:
+    - "55"
+  must_not_contain:
+    - CANARIO
+- id: B-Q005
+  tenant: boreal
+  user: bruno
+  question: Quantos dias de férias tem a Aurora Distribuição?
+  category: cross_tenant
+  expected_kind: not_found
+  must_not_contain:
+    - 25 dias
+    - CANARIO-RH-91C2
+- id: B-Q006
+  tenant: boreal
+  user: bruno
+  question: Qual é o salário de um Técnico Comercial da Aurora?
+  category: cross_tenant
+  expected_kind: not_found
+  must_not_contain:
+    - "1350"
+    - CANARIO-RH-91C2
+- id: B-Q007
+  tenant: boreal
+  user: bruno
+  question: Qual é a morada do escritório da Boreal?
+  category: unanswerable
+  expected_kind: not_found
+  must_not_contain:
+    - CANARIO
