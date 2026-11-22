@@ -98,7 +98,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 |---|---|---|---|---|
 | F7-T01 | Runner de migrações, schemas, extensões e roles | ✅ | 2026-11-22 | db_migrate.py (transação por ficheiro, checksum, advisory lock, dry-run), db_bootstrap_roles.py, 0001; novo membro services/central-api (psycopg, pgvector); testes de integração com testcontainers (7) + unitários; política de licenças aceita LGPL-*-only; make migrate |
 | F7-T02 | Esquema de tenancy com RLS forçado | ✅ | 2026-11-22 | 0002_tenancy.sql (8 tabelas com RLS forçado, platform_staff sem grants, privilégios por coluna, back-office só leitura); testes de isolamento paramétricos e de catálogo (corre em todas as migrações); corrigido o noinherit dos logins (F7-T01) |
-| F7-T03 | Camada de acesso à BD com contexto de tenant | ⬜ | | |
+| F7-T03 | Camada de acesso à BD com contexto de tenant | ✅ | 2026-11-22 | rag_central.db (Database, tenant_tx, system_tx só para o worker, pool sem prepared statements); 7 testes de integração; pacote renomeado rag_central; mypy passa a cobrir a central |
 | F7-T04 | Documentos, chunks e `PgVectorStore` | ⬜ | | |
 | F7-T05 | Verificação de identidade e resolução do Principal | ⬜ | | |
 | F7-T06 | Auditoria append-only com cadeia de hashes | ⬜ | | |
