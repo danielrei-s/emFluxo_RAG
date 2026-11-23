@@ -13,6 +13,7 @@ dependencies = [
     "pyyaml",
     "psutil",
     "langdetect",
+    "jsonschema",
 ]
 
 [project.optional-dependencies]

@@ -1,6 +1,48 @@
 {
   "components": {
     "schemas": {
+      "BrandingRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "assistant_name": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assistant Name"
+          },
+          "logo_base64": {
+            "anyOf": [
+              {
+                "maxLength": 1400000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo Base64"
+          },
+          "primary_color": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primary Color"
+          }
+        },
+        "title": "BrandingRequest",
+        "type": "object"
+      },
       "Classification": {
         "description": "Classificação de sensibilidade de um documento.",
         "enum": [
@@ -919,6 +961,116 @@
         ]
       }
     },
+    "/v1/modules/example/ping": {
+      "get": {
+        "operationId": "ping_v1_modules_example_ping_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Ping V1 Modules Example Ping Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Ping",
+        "tags": [
+          "modules"
+        ]
+      }
+    },
+    "/v1/public/branding/{slug}": {
+      "get": {
+        "description": "Só campos da lista branca, para o ecrã de login (sem autenticação).",
+        "operationId": "public_branding_v1_public_branding__slug__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Public Branding V1 Public Branding  Slug  Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Public Branding",
+        "tags": [
+          "branding"
+        ]
+      }
+    },
+    "/v1/public/branding/{slug}/logo": {
+      "get": {
+        "operationId": "public_logo_v1_public_branding__slug__logo_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Public Logo",
+        "tags": [
+          "branding"
+        ]
+      }
+    },
     "/v1/tenant/audit": {
       "get": {
         "operationId": "list_audit_v1_tenant_audit_get",
@@ -1042,6 +1194,49 @@
         "summary": "List Audit",
         "tags": [
           "tenant-admin"
+        ]
+      }
+    },
+    "/v1/tenant/branding": {
+      "put": {
+        "operationId": "put_branding_v1_tenant_branding_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BrandingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Put Branding V1 Tenant Branding Put",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Branding",
+        "tags": [
+          "branding"
         ]
       }
     },

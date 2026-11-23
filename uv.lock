@@ -3263,6 +3263,7 @@ source = { editable = "services/central-api" }
 dependencies = [
     { name = "fastapi" },
     { name = "pgvector" },
+    { name = "pillow" },
     { name = "psycopg", extra = ["binary"] },
     { name = "psycopg-pool" },
     { name = "rag-core", extra = ["auth", "web"] },
@@ -3273,6 +3274,7 @@ dependencies = [
 requires-dist = [
     { name = "fastapi" },
     { name = "pgvector" },
+    { name = "pillow" },
     { name = "psycopg", extras = ["binary"] },
     { name = "psycopg-pool" },
     { name = "rag-core", extras = ["web", "auth"], editable = "packages/core" },
@@ -3300,6 +3302,7 @@ version = "0.0.0"
 source = { editable = "packages/core" }
 dependencies = [
     { name = "httpx" },
+    { name = "jsonschema" },
     { name = "langdetect" },
     { name = "numpy" },
     { name = "psutil" },
@@ -3373,6 +3376,7 @@ requires-dist = [
     { name = "fastapi", marker = "extra == 'web'" },
     { name = "fastembed", marker = "extra == 'onnx'" },
     { name = "httpx" },
+    { name = "jsonschema" },
     { name = "langdetect" },
     { name = "numpy" },
     { name = "olefile", marker = "extra == 'lite'" },

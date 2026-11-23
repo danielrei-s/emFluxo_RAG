@@ -13,13 +13,14 @@ from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
 from rag_core.clock import SystemClock
 from rag_core.config import Settings
-from rag_core.interfaces import Clock
+from rag_core.interfaces import BlobStore, Clock
 from rag_core.web import install_standard_web
 
 from rag_central import __version__
 from rag_central.auth import CentralAuth
 from rag_central.auth_admin import AuthAdmin
 from rag_central.db import Database
+from rag_central.features import FeatureService
 from rag_central.signing import Signer
 
 # 8 MB chega para metadados; os ficheiros entram por um endpoint próprio (F8-T02).
@@ -34,6 +35,8 @@ class CentralDeps:
     auth: CentralAuth | None = None
     db: Database | None = None
     auth_admin: AuthAdmin | None = None
+    blobs: BlobStore | None = None
+    features: FeatureService | None = None
     clock: Clock = field(default_factory=SystemClock)
     readiness: Mapping[str, Callable[[], bool]] = field(default_factory=dict)
 
@@ -70,12 +73,22 @@ def create_app(settings: Settings, deps: CentralDeps | None = None) -> FastAPI:
         keys = deps.signer.jwks() if deps.signer else {"keys": []}
         return JSONResponse(keys, headers={"Cache-Control": "public, max-age=300"})
 
-    from rag_central.routers import backoffice, devices, internal, tenant_admin, users
+    from rag_central.routers import (
+        backoffice,
+        branding,
+        devices,
+        internal,
+        modules_example,
+        tenant_admin,
+        users,
+    )
 
     routers: tuple[tuple[str, APIRouter], ...] = (
         ("/v1", users.router),
         ("/v1", devices.router),
         ("/v1", tenant_admin.router),
+        ("/v1", branding.router),
+        ("/v1", modules_example.router),
         ("/internal/v1", internal.router),
         ("/backoffice/v1", backoffice.router),
     )

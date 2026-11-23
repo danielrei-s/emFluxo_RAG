@@ -1,0 +1,17 @@
+{
+  "name": "example",
+  "version": "0.1.0",
+  "description": "Módulo de exemplo, só para testes dos pontos de extensão",
+  "ui_routes": ["/modules/example"],
+  "api_prefix": "/v1/modules/example",
+  "permissions": ["chat.use"],
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "greeting": { "type": "string", "maxLength": 40 },
+      "max_items": { "type": "integer", "minimum": 1, "maximum": 100 }
+    },
+    "additionalProperties": false
+  },
+  "default_enabled": false
+}

@@ -60,6 +60,12 @@ class Database:
             cur.execute("select set_config('app.user_id', %s, true)", (user_id,))
             yield cur
 
+    @contextmanager
+    def public_tx(self) -> Iterator[Cursor[DictRow]]:
+        """Sem contexto: só para funções SECURITY DEFINER públicas (o RLS continua a valer)."""
+        with self._pool.connection() as conn, conn.transaction(), conn.cursor() as cur:
+            yield cur
+
     def ping(self) -> bool:
         """Verificação do ``/readyz``: a BD responde (sem contexto de tenant, sem dados)."""
         with self._pool.connection() as conn:

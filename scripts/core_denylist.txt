@@ -1,0 +1,9 @@
+# Termos que o núcleo (packages/core/rag_core) não pode conter: setores e slugs do corpus.
+aurora
+boreal
+contabilidade
+clinica
+clínica
+advocacia
+imobiliaria
+imobiliária

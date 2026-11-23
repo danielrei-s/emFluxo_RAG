@@ -126,8 +126,8 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | ID | Título | Estado | Ramo/PR | Notas |
 |---|---|---|---|---|
 | F9-T01 | API do back-office | ⬜ | | |
-| F9-T02 | Registo de módulos e feature flags | ⬜ | | |
-| F9-T03 | Branding por tenant | ⬜ | | |
+| F9-T02 | Registo de módulos e feature flags | ✅ | 2026-11-23 | rag_core.modules (manifestos + JSON Schema), modules/example, FeatureService + require_feature (404, cache 60 s), check_core_agnostic no make lint; o PUT do back-office (escrita em tenant_features) fica para a F9-T01; 10 testes |
+| F9-T03 | Branding por tenant | ✅ | 2026-11-23 | PUT /v1/tenant/branding (nome sem HTML, cor com contraste WCAG, logótipo re-codificado com Pillow, SVG recusado), público por slug só com campos da lista branca, migração 0009 (função SECURITY DEFINER); 6 testes |
 
 ## F10 — Aplicações web (Portal do Produto A e UI do back-office) · Marco M4
 

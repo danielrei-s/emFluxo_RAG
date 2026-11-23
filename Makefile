@@ -21,6 +21,7 @@ setup-full: ## Instala também todos os extras opcionais do core
 
 lint: ## ruff, mypy e lint JS/TS
 	uv run ruff check .
+	uv run python scripts/check_core_agnostic.py
 	uv run mypy packages/core packages/cli services/gateway services/central-api/rag_central apps/local-engine/rag_local
 	pnpm -r lint
 	pnpm -r typecheck
