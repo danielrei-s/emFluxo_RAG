@@ -8,6 +8,8 @@ dependencies = [
     "fastapi",
     "uvicorn",
     "psutil",
+    "sqlcipher3-wheels>=0.5.7",
+    "keyring>=25.7.0",
 ]
 
 [project.scripts]

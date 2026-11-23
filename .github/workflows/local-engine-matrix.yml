@@ -1,0 +1,31 @@
+name: local-engine-matrix
+
+# Motor local em Windows, macOS e Linux (FTS5 e SQLCipher variam por plataforma).
+on:
+  push:
+    paths:
+      - "apps/local-engine/**"
+      - "packages/core/rag_core/stores/**"
+      - ".github/workflows/local-engine-matrix.yml"
+  pull_request:
+    paths:
+      - "apps/local-engine/**"
+      - "packages/core/rag_core/stores/**"
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  engine:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+      - run: uv sync --all-packages --frozen
+      - run: uv run pytest apps/local-engine/tests packages/core/tests/stores -q
