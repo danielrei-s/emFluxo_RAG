@@ -21,7 +21,7 @@ setup-full: ## Instala também todos os extras opcionais do core
 
 lint: ## ruff, mypy e lint JS/TS
 	uv run ruff check .
-	uv run mypy packages/core packages/cli services/gateway services/central-api/rag_central
+	uv run mypy packages/core packages/cli services/gateway services/central-api/rag_central apps/local-engine/rag_local
 	pnpm -r lint
 	pnpm -r typecheck
 
@@ -52,7 +52,7 @@ licenses: ## Verificação de licenças por perfil (server e dev; shipped em F11
 
 openapi: ## Gera o OpenAPI (gateway e Central API)
 	uv run python services/gateway/rag_gateway/export_openapi.py
-	uv run python services/central-api/rag_central/export_openapi.py
+	uv run python services/central-api/rag_central apps/local-engine/rag_local/export_openapi.py
 
 fixtures: ## Gera o corpus sintético
 	uv run python scripts/make_fixtures.py

@@ -9,7 +9,8 @@ node_modules
 **/.mypy_cache
 **/.ruff_cache
 out
-apps
+apps/*
+!apps/local-engine
 docs
 fixtures
 evals

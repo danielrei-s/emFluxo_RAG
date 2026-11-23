@@ -1,0 +1,24 @@
+[project]
+name = "rag-local"
+version = "0.0.0"
+description = "Motor local do Produto B: servidor loopback para a app desktop (F11)"
+requires-python = ">=3.12"
+dependencies = [
+    "rag-core",
+    "fastapi",
+    "uvicorn",
+    "psutil",
+]
+
+[project.scripts]
+rag-local = "rag_local.main:cli"
+
+[tool.uv.sources]
+rag-core = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["rag_local"]

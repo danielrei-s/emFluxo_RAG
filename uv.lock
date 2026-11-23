@@ -23,6 +23,7 @@ members = [
     "rag-cli",
     "rag-core",
     "rag-gateway",
+    "rag-local",
 ]
 
 [[package]]
@@ -908,6 +909,7 @@ dev = [
     { name = "rag-cli" },
     { name = "rag-core" },
     { name = "rag-gateway" },
+    { name = "rag-local" },
     { name = "reportlab" },
     { name = "testcontainers" },
 ]
@@ -928,6 +930,7 @@ dev = [
     { name = "rag-cli", editable = "packages/cli" },
     { name = "rag-core", editable = "packages/core" },
     { name = "rag-gateway", editable = "services/gateway" },
+    { name = "rag-local", editable = "apps/local-engine" },
     { name = "reportlab" },
     { name = "testcontainers", extras = ["postgres"] },
 ]
@@ -3354,6 +3357,25 @@ dependencies = [
 requires-dist = [
     { name = "fastapi" },
     { name = "rag-core", extras = ["web", "auth"], editable = "packages/core" },
+    { name = "uvicorn" },
+]
+
+[[package]]
+name = "rag-local"
+version = "0.0.0"
+source = { editable = "apps/local-engine" }
+dependencies = [
+    { name = "fastapi" },
+    { name = "psutil" },
+    { name = "rag-core" },
+    { name = "uvicorn" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "fastapi" },
+    { name = "psutil" },
+    { name = "rag-core", editable = "packages/core" },
     { name = "uvicorn" },
 ]
 

@@ -30,7 +30,7 @@ jobs:
       - name: ruff
         run: uv run ruff check .
       - name: mypy
-        run: uv run mypy packages/core packages/cli services/gateway services/central-api/rag_central
+        run: uv run mypy packages/core packages/cli services/gateway services/central-api/rag_central apps/local-engine/rag_local
       - name: pytest com cobertura
         run: uv run pytest --cov=rag_core --cov-report=term-missing
 

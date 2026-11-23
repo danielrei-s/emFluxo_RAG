@@ -10,6 +10,7 @@ COPY packages/core packages/core
 COPY packages/cli packages/cli
 COPY services/central-api services/central-api
 COPY services/gateway services/gateway
+COPY apps/local-engine apps/local-engine
 RUN uv sync --frozen --no-dev --no-editable --package rag-central-api
 
 FROM python:3.12-slim

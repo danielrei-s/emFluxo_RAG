@@ -9,6 +9,7 @@ COPY pyproject.toml uv.lock ./
 COPY packages/core packages/core
 COPY packages/cli packages/cli
 COPY services/gateway services/gateway
+COPY apps/local-engine apps/local-engine
 COPY services/central-api services/central-api
 RUN uv sync --frozen --no-dev --no-editable --package rag-gateway
 

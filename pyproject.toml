@@ -6,21 +6,22 @@ requires-python = ">=3.12"
 dependencies = []
 
 [tool.uv.workspace]
-members = ["packages/core", "packages/cli", "services/gateway", "services/central-api"]
+members = ["packages/core", "packages/cli", "services/gateway", "services/central-api", "apps/local-engine"]
 
 [tool.uv.sources]
 rag-core = { workspace = true }
 rag-cli = { workspace = true }
 rag-gateway = { workspace = true }
 rag-central-api = { workspace = true }
+rag-local = { workspace = true }
 
 [dependency-groups]
-dev = ["rag-core", "rag-cli", "rag-gateway", "rag-central-api", "testcontainers[postgres]", "pip-licenses", "pyyaml", "pre-commit", "reportlab", "python-docx", "openpyxl", "python-pptx", "pypdf", "Pillow"]
+dev = ["rag-core", "rag-cli", "rag-gateway", "rag-central-api", "rag-local", "testcontainers[postgres]", "pip-licenses", "pyyaml", "pre-commit", "reportlab", "python-docx", "openpyxl", "python-pptx", "pypdf", "Pillow"]
 
 [tool.pytest.ini_options]
 # O -m por omissão exclui os níveis pesados (C10); um -m na linha de comandos substitui-o.
 addopts = "-ra --strict-markers --disable-socket --allow-unix-socket -m 'not integration and not docker and not live and not slow and not docling and not ocr and not e2e'"
-testpaths = ["packages/core/tests", "packages/cli/tests", "services/gateway/tests", "services/central-api/tests", "scripts/tests", "infra/tests"]
+testpaths = ["packages/core/tests", "packages/cli/tests", "services/gateway/tests", "services/central-api/tests", "apps/local-engine/tests", "scripts/tests", "infra/tests"]
 markers = [
     "integration: precisa de Postgres (testcontainers, pgvector/pgvector:pg17)",
     "docker: precisa do stack compose (nightly e manual)",
