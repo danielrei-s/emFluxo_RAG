@@ -106,8 +106,12 @@ class FileGate:
     # ------------------------------------------------------------- listagem
     def list_files(self, workspace_id: str) -> list[FileMeta]:
         """Metadados dos ficheiros não excluídos; não abre nem lê nenhum ficheiro."""
+        return [meta for meta, reason in self.scan(workspace_id) if reason is None]
+
+    def scan(self, workspace_id: str) -> list[tuple[FileMeta, str | None]]:
+        """Todos os ficheiros com o motivo de exclusão (``None`` se podem ser propostos)."""
         root = self._root(workspace_id)
-        found: list[FileMeta] = []
+        found: list[tuple[FileMeta, str | None]] = []
         stack = [(root, "")]
         while stack:
             directory, prefix = stack.pop()
@@ -120,19 +124,18 @@ class FileGate:
                         if exclusion_reason(rel + "/x") is None:
                             stack.append((entry.path, rel + "/"))
                         continue
-                    if not entry.is_file(follow_symlinks=False) or exclusion_reason(rel):
+                    if not entry.is_file(follow_symlinks=False):
                         continue
                     info = entry.stat(follow_symlinks=False)
-                    found.append(
-                        FileMeta(
-                            rel,
-                            entry.name,
-                            info.st_size,
-                            info.st_mtime,
-                            os.path.splitext(entry.name)[1].lower(),
-                        )
+                    meta = FileMeta(
+                        rel,
+                        entry.name,
+                        info.st_size,
+                        info.st_mtime,
+                        os.path.splitext(entry.name)[1].lower(),
                     )
-        return sorted(found, key=lambda f: f.rel_path)
+                    found.append((meta, exclusion_reason(rel)))
+        return sorted(found, key=lambda item: item[0].rel_path)
 
     # -------------------------------------------------------------- leitura
     def read_bytes(self, doc_id: str, max_bytes: int) -> tuple[bytes, bool]:

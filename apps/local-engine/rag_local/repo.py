@@ -27,6 +27,10 @@ create table if not exists local_documents (
   ext text not null, suggested_classification text not null, classification text not null,
   state text not null, local_only integer not null default 1, error_code text,
   updated_at text not null, unique (workspace_id, rel_path));
+create table if not exists local_jobs (
+  id integer primary key autoincrement,
+  kind text not null check (kind in ('index','delete','rescan')),
+  doc_id text, rel_path text, created_at text not null, attempts integer not null default 0);
 create table if not exists consent_events (
   id integer primary key autoincrement, ts text not null, workspace_id text not null,
   doc_id text, action text not null, actor text not null);
@@ -152,6 +156,58 @@ class LocalRepo:
             "update local_documents set classification = ?, updated_at = ? where doc_id = ?",
             (classification, _now(), doc_id),
         )
+        self._conn.commit()
+
+    def documents(self, workspace_id: str) -> list[dict[str, Any]]:
+        rows = self._conn.execute(
+            "select doc_id, rel_path, state, classification, suggested_classification, local_only "
+            "from local_documents where workspace_id = ? order by rel_path",
+            (workspace_id,),
+        ).fetchall()
+        return [
+            {"doc_id": r[0], "rel_path": r[1], "state": r[2], "classification": r[3],
+             "suggested_classification": r[4], "local_only": bool(r[5])}
+            for r in rows
+        ]  # fmt: skip
+
+    def set_local_only(self, doc_id: str, local_only: bool) -> None:
+        self._conn.execute(
+            "update local_documents set local_only = ?, updated_at = ? where doc_id = ?",
+            (int(local_only), _now(), doc_id),
+        )
+        self._conn.commit()
+
+    def update_workspace(
+        self, workspace_id: str, policy: NewFilePolicy, auto_types: list[str]
+    ) -> None:
+        cursor = self._conn.execute(
+            "update workspaces set new_file_policy = ?, auto_types = ? where id = ?",
+            (policy, json.dumps(auto_types), workspace_id),
+        )
+        if cursor.rowcount == 0:
+            raise NotFound()
+        self._event(workspace_id, None, "workspace_policy", "user")
+        self._conn.commit()
+
+    def enqueue_job(self, kind: str, doc_id: str | None = None, rel_path: str | None = None) -> int:
+        cursor = self._conn.execute(
+            "insert into local_jobs (kind, doc_id, rel_path, created_at) values (?, ?, ?, ?)",
+            (kind, doc_id, rel_path, _now()),
+        )
+        self._conn.commit()
+        return int(cursor.lastrowid or 0)
+
+    def jobs(self) -> list[dict[str, Any]]:
+        rows = self._conn.execute(
+            "select id, kind, doc_id, rel_path, attempts from local_jobs order by id"
+        ).fetchall()
+        return [
+            {"id": r[0], "kind": r[1], "doc_id": r[2], "rel_path": r[3], "attempts": r[4]}
+            for r in rows
+        ]
+
+    def drop_jobs(self, doc_id: str) -> None:
+        self._conn.execute("delete from local_jobs where doc_id = ?", (doc_id,))
         self._conn.commit()
 
     # ------------------------------------------------------------- eventos
