@@ -117,7 +117,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F8-T07 | Registo de dispositivos, licença e kill switch (servidor) | ✅ | 2026-11-23 | routers/devices (register só com produto local, heartbeat /devices/me com licença de 7 dias, listar e revogar com auditoria), require_active_device; 5 testes; tabela criada na 0006 |
 | F8-T08 | Encriptação envelope dos originais por tenant | ⬜ | | |
 | F8-T09 | Retenção, exportação e eliminação de tenant | ⬜ | | |
-| F8-T10 | Endpoints de administração do tenant | ⬜ | | |
+| F8-T10 | Endpoints de administração do tenant | ✅ | 2026-11-23 | /v1/tenant (users, groups, settings, audit) com aal2; AuthAdmin (Supabase + falso); migração 0008 (admins do tenant criam utilizadores convidados, verificado na BD); 9 testes. HR-26 não bloqueante |
 | F8-T11 | Deploy da plataforma central em staging | ⬜ | | |
 | F8-T12 | (Condicional) Fluxo próprio de autorização da app desktop | ⬜ | | |
 

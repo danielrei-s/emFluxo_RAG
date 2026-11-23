@@ -1,6 +1,33 @@
 {
   "components": {
     "schemas": {
+      "Classification": {
+        "description": "Classificação de sensibilidade de um documento.",
+        "enum": [
+          "public",
+          "internal",
+          "confidential",
+          "restricted"
+        ],
+        "title": "Classification",
+        "type": "string"
+      },
+      "GroupRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "GroupRequest",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -12,6 +39,70 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "InviteRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "maxLength": 254,
+            "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$",
+            "title": "Email",
+            "type": "string"
+          },
+          "products": {
+            "items": {
+              "enum": [
+                "web",
+                "local"
+              ],
+              "type": "string"
+            },
+            "title": "Products",
+            "type": "array"
+          },
+          "redirect_to": {
+            "anyOf": [
+              {
+                "maxLength": 300,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Redirect To"
+          },
+          "role": {
+            "default": "member",
+            "enum": [
+              "admin",
+              "editor",
+              "member",
+              "viewer"
+            ],
+            "title": "Role",
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ],
+        "title": "InviteRequest",
+        "type": "object"
+      },
+      "MemberRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "user_id": {
+            "title": "User Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "title": "MemberRequest",
         "type": "object"
       },
       "RegisterRequest": {
@@ -101,6 +192,119 @@
           "sub"
         ],
         "title": "ResolveRequest",
+        "type": "object"
+      },
+      "SettingsPatch": {
+        "additionalProperties": false,
+        "properties": {
+          "block_cloud_for": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Classification"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Block Cloud For"
+          },
+          "conversation_retention_days": {
+            "anyOf": [
+              {
+                "enum": [
+                  0,
+                  30,
+                  90
+                ],
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conversation Retention Days"
+          },
+          "forced_offline": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forced Offline"
+          },
+          "general_knowledge": {
+            "anyOf": [
+              {
+                "enum": [
+                  "labeled",
+                  "forbidden"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "General Knowledge"
+          },
+          "redact_pii_for_external": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Redact Pii For External"
+          }
+        },
+        "title": "SettingsPatch",
+        "type": "object"
+      },
+      "UpdateUserRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "anyOf": [
+              {
+                "enum": [
+                  "admin",
+                  "editor",
+                  "member",
+                  "viewer"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "active",
+                  "disabled"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          }
+        },
+        "title": "UpdateUserRequest",
         "type": "object"
       },
       "UsageBatch": {
@@ -712,6 +916,601 @@
         "summary": "Revoke Device",
         "tags": [
           "devices"
+        ]
+      }
+    },
+    "/v1/tenant/audit": {
+      "get": {
+        "operationId": "list_audit_v1_tenant_audit_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "action",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "pattern": "^[a-z0-9_.]+$",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Action"
+            }
+          },
+          {
+            "in": "query",
+            "name": "user",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 64,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "User"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "From"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "To"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response List Audit V1 Tenant Audit Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "List Audit",
+        "tags": [
+          "tenant-admin"
+        ]
+      }
+    },
+    "/v1/tenant/groups": {
+      "get": {
+        "operationId": "list_groups_v1_tenant_groups_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Response List Groups V1 Tenant Groups Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Groups",
+        "tags": [
+          "tenant-admin"
+        ]
+      },
+      "post": {
+        "operationId": "create_group_v1_tenant_groups_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Create Group V1 Tenant Groups Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Group",
+        "tags": [
+          "tenant-admin"
+        ]
+      }
+    },
+    "/v1/tenant/groups/{group_id}": {
+      "delete": {
+        "operationId": "delete_group_v1_tenant_groups__group_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "title": "Group Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Delete Group V1 Tenant Groups  Group Id  Delete",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Group",
+        "tags": [
+          "tenant-admin"
+        ]
+      },
+      "patch": {
+        "operationId": "rename_group_v1_tenant_groups__group_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "title": "Group Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GroupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Rename Group V1 Tenant Groups  Group Id  Patch",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Rename Group",
+        "tags": [
+          "tenant-admin"
+        ]
+      }
+    },
+    "/v1/tenant/groups/{group_id}/members": {
+      "post": {
+        "operationId": "add_member_v1_tenant_groups__group_id__members_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "title": "Group Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Add Member V1 Tenant Groups  Group Id  Members Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Add Member",
+        "tags": [
+          "tenant-admin"
+        ]
+      }
+    },
+    "/v1/tenant/groups/{group_id}/members/{user_id}": {
+      "delete": {
+        "operationId": "remove_member_v1_tenant_groups__group_id__members__user_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "group_id",
+            "required": true,
+            "schema": {
+              "title": "Group Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Remove Member V1 Tenant Groups  Group Id  Members  User Id  Delete",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Remove Member",
+        "tags": [
+          "tenant-admin"
+        ]
+      }
+    },
+    "/v1/tenant/settings": {
+      "get": {
+        "operationId": "get_settings_v1_tenant_settings_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Get Settings V1 Tenant Settings Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Settings",
+        "tags": [
+          "tenant-admin"
+        ]
+      },
+      "patch": {
+        "operationId": "patch_settings_v1_tenant_settings_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SettingsPatch"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "title": "Response Patch Settings V1 Tenant Settings Patch",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patch Settings",
+        "tags": [
+          "tenant-admin"
+        ]
+      }
+    },
+    "/v1/tenant/users": {
+      "get": {
+        "operationId": "list_users_v1_tenant_users_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "title": "Response List Users V1 Tenant Users Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Users",
+        "tags": [
+          "tenant-admin"
+        ]
+      },
+      "post": {
+        "operationId": "invite_user_v1_tenant_users_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Invite User V1 Tenant Users Post",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Invite User",
+        "tags": [
+          "tenant-admin"
+        ]
+      }
+    },
+    "/v1/tenant/users/{user_id}": {
+      "patch": {
+        "operationId": "update_user_v1_tenant_users__user_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Update User V1 Tenant Users  User Id  Patch",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update User",
+        "tags": [
+          "tenant-admin"
         ]
       }
     }

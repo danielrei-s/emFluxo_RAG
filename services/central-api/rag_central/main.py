@@ -13,6 +13,7 @@ from rag_core.logging import configure_logging
 
 from rag_central.app import CentralDeps, create_app
 from rag_central.auth import CentralAuth, PrincipalResolver, build_identity_verifier
+from rag_central.auth_admin import SupabaseAuthAdmin
 from rag_central.db import Database, make_pool
 from rag_central.signing import Signer, load_keys
 
@@ -31,7 +32,10 @@ def build_deps(settings: Settings) -> CentralDeps:
         db = Database(pool)
         auth = CentralAuth(build_identity_verifier(settings), PrincipalResolver(db, clock))
         readiness["database"] = db.ping
-    return CentralDeps(signer=signer, auth=auth, db=db, readiness=readiness)
+    admin = None
+    if settings.supabase_url and settings.supabase_service_role_key is not None:
+        admin = SupabaseAuthAdmin(settings.supabase_url, settings.supabase_service_role_key)
+    return CentralDeps(signer=signer, auth=auth, db=db, auth_admin=admin, readiness=readiness)
 
 
 _settings = get_settings()

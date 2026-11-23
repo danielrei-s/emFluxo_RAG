@@ -138,11 +138,11 @@ def test_users_visible_only_for_self_or_shared_tenant(rls: Rls) -> None:
     with rls.connect(tenant=TENANT_A, user=USER_1) as conn:
         ids = {row[0] for row in conn.execute("select id::text from app.users").fetchall()}
         assert ids == {USER_1, USER_3}  # ela própria e quem está no tenant A
-        with pytest.raises(errors.InsufficientPrivilege):  # só se insere o próprio utilizador
-            conn.execute("insert into app.users (id, email) values (%s, 'x@x.test')", (USER_2,))
-        conn.execute(
-            "insert into app.users (id, email) values (%s, 'eu@x.test')", (USER_1,)
-        ) if False else None
+    with (  # membro simples: só pode inserir o próprio
+        rls.connect(tenant=TENANT_A, user=USER_3) as conn,
+        pytest.raises(errors.InsufficientPrivilege),
+    ):
+        conn.execute("insert into app.users (id, email) values (gen_random_uuid(), 'x@x.test')")
     with rls.connect(user=USER_4) as conn:  # sem tenant: só ela própria
         assert {r[0] for r in conn.execute("select id::text from app.users").fetchall()} == {USER_4}
         assert _blocked(conn, f"update app.users set display_name = 'x' where id = '{USER_1}'")

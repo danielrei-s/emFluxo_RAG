@@ -18,6 +18,7 @@ from rag_core.web import install_standard_web
 
 from rag_central import __version__
 from rag_central.auth import CentralAuth
+from rag_central.auth_admin import AuthAdmin
 from rag_central.db import Database
 from rag_central.signing import Signer
 
@@ -32,6 +33,7 @@ class CentralDeps:
     signer: Signer | None = None
     auth: CentralAuth | None = None
     db: Database | None = None
+    auth_admin: AuthAdmin | None = None
     clock: Clock = field(default_factory=SystemClock)
     readiness: Mapping[str, Callable[[], bool]] = field(default_factory=dict)
 
@@ -68,11 +70,12 @@ def create_app(settings: Settings, deps: CentralDeps | None = None) -> FastAPI:
         keys = deps.signer.jwks() if deps.signer else {"keys": []}
         return JSONResponse(keys, headers={"Cache-Control": "public, max-age=300"})
 
-    from rag_central.routers import backoffice, devices, internal, users
+    from rag_central.routers import backoffice, devices, internal, tenant_admin, users
 
     routers: tuple[tuple[str, APIRouter], ...] = (
         ("/v1", users.router),
         ("/v1", devices.router),
+        ("/v1", tenant_admin.router),
         ("/internal/v1", internal.router),
         ("/backoffice/v1", backoffice.router),
     )
