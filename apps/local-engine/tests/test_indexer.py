@@ -11,6 +11,7 @@ from rag_core.config import Settings
 from rag_core.fakes import FakeEmbedder
 from rag_core.ingestion.pipeline import IngestionService
 from rag_core.stores import SqliteVectorStore
+from rag_core.testing.indexed import inproc_runner
 from rag_local.consent import State
 from rag_local.events import EventBus
 from rag_local.filegate import FileGate
@@ -30,7 +31,10 @@ class Rig:
         self.store = SqliteVectorStore(lambda: store_conn, DIM)
         self.events = EventBus()
         ingestion = IngestionService(
-            embedder=FakeEmbedder(), store=self.store, settings=Settings.for_tests()
+            embedder=FakeEmbedder(),
+            store=self.store,
+            settings=Settings.for_tests(),
+            runner=inproc_runner,  # sem sandbox: rápido e igual em todos os SO
         )
         self.indexer = Indexer(self.repo, self.gate, self.store, ingestion, self.events)
 
