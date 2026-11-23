@@ -24,6 +24,7 @@ _POSIX_SYSTEM = (
     "/system",
     "/library",
     "/etc",
+    "/private/etc",  # no macOS /etc é um atalho para /private/etc
     "/usr",
     "/bin",
     "/sbin",
