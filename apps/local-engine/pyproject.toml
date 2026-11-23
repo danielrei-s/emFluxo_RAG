@@ -10,6 +10,7 @@ dependencies = [
     "psutil",
     "sqlcipher3-wheels>=0.5.7",
     "keyring>=25.7.0",
+    "watchdog>=7.1.1",
 ]
 
 [project.scripts]

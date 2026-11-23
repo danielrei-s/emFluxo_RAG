@@ -116,14 +116,15 @@ class LocalRepo:
 
     def document(self, doc_id: str) -> dict[str, Any]:
         row = self._conn.execute(
-            "select workspace_id, rel_path, size, mtime, state, classification from "
-            "local_documents where doc_id = ?",
+            "select workspace_id, rel_path, size, mtime, state, classification, file_hash, "
+            "local_only, ext from local_documents where doc_id = ?",
             (doc_id,),
         ).fetchone()
         if row is None:
             raise NotFound()
         return {"workspace_id": row[0], "rel_path": row[1], "size": row[2], "mtime": row[3],
-                "state": row[4], "classification": row[5]}  # fmt: skip
+                "state": row[4], "classification": row[5], "file_hash": row[6],
+                "local_only": bool(row[7]), "ext": row[8]}  # fmt: skip
 
     def state(self, doc_id: str) -> State:
         row = self._conn.execute(
@@ -205,6 +206,46 @@ class LocalRepo:
             {"id": r[0], "kind": r[1], "doc_id": r[2], "rel_path": r[3], "attempts": r[4]}
             for r in rows
         ]
+
+    def update_file_info(self, doc_id: str, size: int, mtime: float, file_hash: str | None) -> None:
+        self._conn.execute(
+            "update local_documents set size = ?, mtime = ?, file_hash = ?, error_code = null, "
+            "updated_at = ? where doc_id = ?",
+            (size, mtime, file_hash, _now(), doc_id),
+        )
+        self._conn.commit()
+
+    def set_error(self, doc_id: str, code: str) -> None:
+        self._conn.execute(
+            "update local_documents set error_code = ?, updated_at = ? where doc_id = ?",
+            (code, _now(), doc_id),
+        )
+        self._conn.commit()
+
+    def delete_document_row(self, doc_id: str) -> None:
+        self._conn.execute("delete from local_documents where doc_id = ?", (doc_id,))
+        self._conn.commit()
+
+    def has_job(self, kind: str, doc_id: str) -> bool:
+        row = self._conn.execute(
+            "select 1 from local_jobs where kind = ? and doc_id = ?", (kind, doc_id)
+        ).fetchone()
+        return row is not None
+
+    def next_job(self) -> dict[str, Any] | None:
+        row = self._conn.execute(
+            "select id, kind, doc_id, rel_path, attempts from local_jobs order by id limit 1"
+        ).fetchone()
+        if row is None:
+            return None
+        self._conn.execute("update local_jobs set attempts = attempts + 1 where id = ?", (row[0],))
+        self._conn.commit()
+        return {"id": row[0], "kind": row[1], "doc_id": row[2], "rel_path": row[3],
+                "attempts": row[4] + 1}  # fmt: skip
+
+    def finish_job(self, job_id: int) -> None:
+        self._conn.execute("delete from local_jobs where id = ?", (job_id,))
+        self._conn.commit()
 
     def drop_jobs(self, doc_id: str) -> None:
         self._conn.execute("delete from local_jobs where doc_id = ?", (doc_id,))

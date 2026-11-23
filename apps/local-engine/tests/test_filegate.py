@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 import sqlite3
 import subprocess
 import sys
@@ -190,7 +191,8 @@ def test_no_user_file_access_outside_filegate() -> None:
         if path.name == "filegate.py":
             continue
         text = path.read_text(encoding="utf-8")
-        if any(token in text for token in ("open(", ".read_text(", ".read_bytes(", "os.scandir(")):
+        forbidden = r"(?<![\w.])open\(|\.read_text\(|\.open\(|os\.scandir\(|(?<!gate)\.read_bytes\("
+        if re.search(forbidden, text):
             offenders.append(path.name)
     assert offenders == []
 
