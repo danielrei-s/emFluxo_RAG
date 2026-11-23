@@ -110,6 +110,17 @@ class LocalRepo:
         self._conn.commit()
         return doc_id
 
+    def document(self, doc_id: str) -> dict[str, Any]:
+        row = self._conn.execute(
+            "select workspace_id, rel_path, size, mtime, state, classification from "
+            "local_documents where doc_id = ?",
+            (doc_id,),
+        ).fetchone()
+        if row is None:
+            raise NotFound()
+        return {"workspace_id": row[0], "rel_path": row[1], "size": row[2], "mtime": row[3],
+                "state": row[4], "classification": row[5]}  # fmt: skip
+
     def state(self, doc_id: str) -> State:
         row = self._conn.execute(
             "select state from local_documents where doc_id = ?", (doc_id,)

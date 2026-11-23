@@ -151,7 +151,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F11-T01 | Esqueleto do motor com proteção de loopback | ✅ | 2026-11-23 | apps/local-engine (rag-local serve): loopback, Host 421, Origin 403, token Bearer, handshake JSON, vigia do pai, sem logs de acesso; 10 testes |
 | F11-T02 | Armazenamento local encriptado (SQLCipher + keychain do SO) | ✅ | 2026-11-23 | KeyManager (keyring), SQLCipher (sqlcipher3-wheels, FTS5 ok), estado key_lost sem sobrescrever, contrato do VectorStore; matriz Windows/macOS/Linux (workflow novo, por validar no GitHub); 25 testes |
 | F11-T03 | Modelo de workspaces e consentimento | ✅ | 2026-11-23 | consent.py (máquina de estados, 10 transições, as outras 26 dão ConsentError), exclusions.py (segredos e ficheiros do sistema, com motivo), classification.py (sugestão sem acentos, palavras inteiras), repo.py (workspaces, documentos, eventos sem conteúdo); 71 testes |
-| F11-T04 | FileGate — único ponto de leitura de ficheiros do utilizador | ⬜ | | |
+| F11-T04 | FileGate — único ponto de leitura de ficheiros do utilizador | ✅ | 2026-11-23 | FileGate (raízes recusadas: /, home, sistema, \?; resolve sem .., ADS, nomes reservados nem symlinks/junctions fora da raiz; listagem sem abrir ficheiros; leitura só de aprovados com deteção de alterações), harness de audit hook; o teste de indexação completa cobre listar+aprovar+ler (a ingestão em si liga-se na F11-T05); 12 testes |
 | F11-T05 | API de workspaces: pré-visualização, aprovação e políticas | ⬜ | | |
 | F11-T06 | Observação de pastas e indexação incremental | ⬜ | | |
 | F11-T07 | Chat local e registo de transparência | ⬜ | | |
