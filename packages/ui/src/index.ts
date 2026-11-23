@@ -1,2 +1,14 @@
 export { Hello } from "./Hello";
 export type { HelloProps } from "./Hello";
+export { AiDisclosure } from "./AiDisclosure";
+export { ChatThread } from "./ChatThread";
+export type { ChatThreadProps } from "./ChatThread";
+export { CitationChips, citationLabel } from "./CitationChips";
+export { CitationPanel } from "./CitationPanel";
+export { FeedbackButtons } from "./FeedbackButtons";
+export { MessageBubble } from "./MessageBubble";
+export { SafeMarkdown, isSafeHref } from "./SafeMarkdown";
+export { errorMessage, errorsPt } from "./i18n/errors.pt";
+export { pt } from "./i18n/pt";
+export type { AnswerKind } from "./i18n/pt";
+export type { ChatMessageData, Citation } from "./types";

@@ -1,0 +1,21 @@
+[
+  "access_denied",
+  "bad_request",
+  "consent_error",
+  "corrupted_file",
+  "encrypted_file",
+  "file_too_large",
+  "internal_error",
+  "not_found",
+  "parse_memory_limit",
+  "parse_timeout",
+  "prompt_too_large",
+  "quota_exceeded",
+  "rate_limited",
+  "sandbox_violation",
+  "unauthenticated",
+  "unsupported_feature",
+  "unsupported_type",
+  "upstream_error",
+  "validation_failed"
+]

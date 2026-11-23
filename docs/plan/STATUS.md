@@ -135,7 +135,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 |---|---|---|---|---|
 | F10-T01 | Esqueleto Next.js, BFF, autenticação e cabeçalhos de segurança | ⬜ | | |
 | F10-T02 | Cliente TypeScript gerado do OpenAPI | ⬜ | | |
-| F10-T03 | Componentes de chat partilhados e renderização segura (`packages/ui`) | ⬜ | | |
+| F10-T03 | Componentes de chat partilhados e renderização segura (`packages/ui`) | ✅ | 2026-11-23 | packages/ui: SafeMarkdown (sem HTML, imagens nem javascript:, links só https da allowlist), MessageBubble com etiquetas, CitationChips/Panel, FeedbackButtons, AiDisclosure, textos PT-PT e mapa de erros; scripts/export_error_codes.py gera api-client/src/error-codes.json; 9 testes vitest |
 | F10-T04 | Página de chat com streaming | ⬜ | | |
 | F10-T05 | Gestão de documentos | ⬜ | | |
 | F10-T06 | Administração do tenant | ⬜ | | |

@@ -10,3 +10,4 @@ docs/*.md
 fixtures/corpus/
 services/gateway/openapi.json
 services/central-api/openapi.json
+packages/api-client/src/error-codes.json
