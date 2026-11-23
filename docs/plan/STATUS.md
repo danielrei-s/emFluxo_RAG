@@ -183,7 +183,7 @@ Legenda: ⬜ por fazer · 🟨 em curso · ✅ concluída · ⛔ bloqueada (HR-x
 | F13-T05 | Testes de carga e capacidade | ⬜ | | |
 | F13-T06 | Gate de revisão de segurança | ⬜ | | |
 | F13-T07 | Runbooks e documentação de produto | ⬜ | | |
-| F13-T08 | Pacote legal (rascunhos para validação) | ⬜ | | |
+| F13-T08 | Pacote legal (rascunhos para validação) | ⛔ | HR-20 | 6 rascunhos em docs/legal (DPA, privacidade, termos, DPIA, uso de IA, retenção) com aviso de rascunho e teste; falta validação jurídica |
 
 ## F14 — Piloto real
 
